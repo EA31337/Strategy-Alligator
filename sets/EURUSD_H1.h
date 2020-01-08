@@ -6,7 +6,7 @@
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
 struct Stg_Alligator_EURUSD_H1_Params : Stg_Alligator_Params {
-  void Stg_Alligator_EURUSD_H1_Params() {
+  Stg_Alligator_EURUSD_H1_Params() {
     symbol = "EURUSD";
     tf = PERIOD_H1;
     Alligator_Period_Jaw = 16;
