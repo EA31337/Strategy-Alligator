@@ -20,11 +20,11 @@ struct Stg_Alligator_EURUSD_M15_Params : Stg_Alligator_Params {
     Alligator_Shift = 2;
     Alligator_TrailingStopMethod = 7;
     Alligator_TrailingProfitMethod = 25;
-    Alligator_SignalLevel1 = 0.1;
-    Alligator_SignalLevel2 = 0;
+    Alligator_SignalOpenLevel = 0.1;
     Alligator_SignalBaseMethod = 19;
     Alligator_SignalOpenMethod1 = 971;
     Alligator_SignalOpenMethod2 = 0;
+    Alligator_SignalCloseLevel = 0;
     Alligator_SignalCloseMethod1 = 4;
     Alligator_SignalCloseMethod2 = 0;
     Alligator_MaxSpread = 4;

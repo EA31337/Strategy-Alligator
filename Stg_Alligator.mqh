@@ -27,11 +27,11 @@ INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4; // Applied Price
 INPUT int Alligator_Shift = 2; // Shift
 INPUT ENUM_TRAIL_TYPE Alligator_TrailingStopMethod = 7; // Trail stop method
 INPUT ENUM_TRAIL_TYPE Alligator_TrailingProfitMethod = 25; // Trail profit method
-INPUT double Alligator_SignalLevel1 = 0.1; // Signal level 1
-INPUT double Alligator_SignalLevel2 = 0.0; // Signal level 2
+INPUT double Alligator_SignalOpenLevel = 0.1; // Signal open level
 INPUT int Alligator_SignalBaseMethod = 19; // Signal method (-63-63)
 INPUT int Alligator_SignalOpenMethod1 = 971; // Open condition 1 (0-1023)
 INPUT int Alligator_SignalOpenMethod2 = 0; // Open condition 2 (0-1023)
+INPUT double Alligator_SignalCloseLevel = 0.0; // Signal close level
 INPUT ENUM_MARKET_EVENT Alligator_SignalCloseMethod1 = 4; // Close condition 1
 INPUT ENUM_MARKET_EVENT Alligator_SignalCloseMethod2 = 0; // Close condition 2
 INPUT double Alligator_MaxSpread  =  0; // Max spread to trade (pips)
@@ -49,11 +49,11 @@ struct Stg_Alligator_Params : Stg_Params {
   int Alligator_Shift;
   ENUM_TRAIL_TYPE Alligator_TrailingStopMethod;
   ENUM_TRAIL_TYPE Alligator_TrailingProfitMethod;
-  double Alligator_SignalLevel1;
-  double Alligator_SignalLevel2;
+  double Alligator_SignalOpenLevel;
   long Alligator_SignalBaseMethod;
   long Alligator_SignalOpenMethod1;
   long Alligator_SignalOpenMethod2;
+  double Alligator_SignalCloseLevel;
   ENUM_MARKET_EVENT Alligator_SignalCloseMethod1;
   ENUM_MARKET_EVENT Alligator_SignalCloseMethod2;
   double Alligator_MaxSpread;
@@ -71,11 +71,11 @@ struct Stg_Alligator_Params : Stg_Params {
     Alligator_Shift(::Alligator_Shift),
     Alligator_TrailingStopMethod(::Alligator_TrailingStopMethod),
     Alligator_TrailingProfitMethod(::Alligator_TrailingProfitMethod),
-    Alligator_SignalLevel1(::Alligator_SignalLevel1),
-    Alligator_SignalLevel2(::Alligator_SignalLevel2),
+    Alligator_SignalOpenLevel(::Alligator_SignalOpenLevel),
     Alligator_SignalBaseMethod(::Alligator_SignalBaseMethod),
     Alligator_SignalOpenMethod1(::Alligator_SignalOpenMethod1),
     Alligator_SignalOpenMethod2(::Alligator_SignalOpenMethod2),
+    Alligator_SignalCloseLevel(::Alligator_SignalCloseLevel),
     Alligator_SignalCloseMethod1(::Alligator_SignalCloseMethod1),
     Alligator_SignalCloseMethod2(::Alligator_SignalCloseMethod2),
     Alligator_MaxSpread(::Alligator_MaxSpread)
@@ -124,7 +124,7 @@ class Stg_Alligator : public Strategy {
       _params.Alligator_SignalBaseMethod,
       _params.Alligator_SignalOpenMethod1, _params.Alligator_SignalOpenMethod2,
       _params.Alligator_SignalCloseMethod1, _params.Alligator_SignalCloseMethod2,
-      _params.Alligator_SignalLevel1, _params.Alligator_SignalLevel2
+      _params.Alligator_SignalOpenLevel, _params.Alligator_SignalCloseLevel
     );
     sparams.SetStops(_params.Alligator_TrailingProfitMethod, _params.Alligator_TrailingStopMethod);
     sparams.SetMaxSpread(_params.Alligator_MaxSpread);
@@ -134,15 +134,10 @@ class Stg_Alligator : public Strategy {
   }
 
   /**
-   * Check if Alligator indicator is on buy or sell.
+   * Check strategy's opening signal.
    *
-   * @param
-   *   cmd (int) - type of trade order command
-   *   period (int) - period to check for
-   *   _signal_method (int) - signal method to use by using bitwise AND operation
-   *   _signal_level1 (double) - signal level to consider the signal
    */
-  bool SignalOpen(ENUM_ORDER_TYPE cmd, long _signal_method = EMPTY, double _signal_level1 = EMPTY, double _signal_level2 = EMPTY) {
+  bool SignalOpen(ENUM_ORDER_TYPE _cmd, long _signal_method = EMPTY, double _signal_level = EMPTY) {
     // [x][0] - The Blue line (Alligator's Jaw), [x][1] - The Red Line (Alligator's Teeth), [x][2] - The Green Line (Alligator's Lips)
     bool _result = false;
     double alligator_0_jaw   = ((Indi_Alligator *) this.Data()).GetValue(LINE_JAW, 0);
@@ -155,10 +150,9 @@ class Stg_Alligator : public Strategy {
     double alligator_2_teeth = ((Indi_Alligator *) this.Data()).GetValue(LINE_TEETH, 2);
     double alligator_2_lips  = ((Indi_Alligator *) this.Data()).GetValue(LINE_LIPS, 2);
     if (_signal_method == EMPTY) _signal_method = GetSignalBaseMethod();
-    if (_signal_level1 == EMPTY) _signal_level1 = GetSignalLevel1();
-    if (_signal_level2 == EMPTY) _signal_level2 = GetSignalLevel2();
-    double gap = _signal_level1 * Chart().GetPipSize();
-    switch(cmd) {
+    if (_signal_level == EMPTY) _signal_level = GetSignalOpenLevel();
+    double gap = _signal_level * Chart().GetPipSize();
+    switch(_cmd) {
       case ORDER_TYPE_BUY:
         _result = (
           alligator_0_lips > alligator_0_teeth + gap && // Check if Lips are above Teeth ...
@@ -211,6 +205,15 @@ class Stg_Alligator : public Strategy {
         break;
     }
     return _result;
+  }
+
+  /**
+   * Check strategy's closing signal.
+   *
+   */
+  bool SignalClose(ENUM_ORDER_TYPE _cmd, long _signal_method = EMPTY, double _signal_level = EMPTY) {
+    if (_signal_level == EMPTY) _signal_level = GetSignalCloseLevel();
+    return SignalOpen(Order::NegateOrderType(_cmd), _signal_method, _signal_level);
   }
 
 };
