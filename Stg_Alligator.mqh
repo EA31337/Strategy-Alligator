@@ -15,23 +15,22 @@
 
 // User input params.
 INPUT string __Alligator_Parameters__ = "-- Alligator strategy params --";  // >>> ALLIGATOR <<<
-INPUT int Alligator_Active_Tf = 127;   // Activate timeframes (1-255) [M1=1,M5=2,M15=4,M30=8,H1=16,H2=32,H4=64...]
-INPUT int Alligator_Period_Jaw = 16;   // Jaw Period
-INPUT int Alligator_Period_Teeth = 8;  // Teeth Period
-INPUT int Alligator_Period_Lips = 6;   // Lips Period
-INPUT int Alligator_Shift_Jaw = 5;     // Jaw Shift
-INPUT int Alligator_Shift_Teeth = 7;   // Teeth Shift
-INPUT int Alligator_Shift_Lips = 5;    // Lips Shift
-INPUT ENUM_MA_METHOD Alligator_MA_Method = 2;          // MA Method
-INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;  // Applied Price
-INPUT int Alligator_Shift = 2;                         // Shift
-INPUT int Alligator_SignalOpenMethod = 0;              // Signal open method (-63-63)
-INPUT double Alligator_SignalOpenLevel = 36;           // Signal open level (-49-49)
-INPUT int Alligator_SignalCloseMethod = 0;             // Signal close method (-63-63)
-INPUT double Alligator_SignalCloseLevel = 36;          // Signal close level (-49-49)
-INPUT int Alligator_PriceLimitMethod = 0;              // Price limit method
-INPUT double Alligator_PriceLimitLevel = 0;            // Price limit level
-INPUT double Alligator_MaxSpread = 0;                  // Max spread to trade (pips)
+INPUT int Alligator_Period_Jaw = 16;                                        // Jaw Period
+INPUT int Alligator_Period_Teeth = 8;                                       // Teeth Period
+INPUT int Alligator_Period_Lips = 6;                                        // Lips Period
+INPUT int Alligator_Shift_Jaw = 5;                                          // Jaw Shift
+INPUT int Alligator_Shift_Teeth = 7;                                        // Teeth Shift
+INPUT int Alligator_Shift_Lips = 5;                                         // Lips Shift
+INPUT ENUM_MA_METHOD Alligator_MA_Method = 2;                               // MA Method
+INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;                       // Applied Price
+INPUT int Alligator_Shift = 2;                                              // Shift
+INPUT int Alligator_SignalOpenMethod = 0;                                   // Signal open method (-63-63)
+INPUT double Alligator_SignalOpenLevel = 36;                                // Signal open level (-49-49)
+INPUT int Alligator_SignalCloseMethod = 0;                                  // Signal close method (-63-63)
+INPUT double Alligator_SignalCloseLevel = 36;                               // Signal close level (-49-49)
+INPUT int Alligator_PriceLimitMethod = 0;                                   // Price limit method
+INPUT double Alligator_PriceLimitLevel = 0;                                 // Price limit level
+INPUT double Alligator_MaxSpread = 0;                                       // Max spread to trade (pips)
 
 // Struct to define strategy parameters to override.
 struct Stg_Alligator_Params : Stg_Params {
