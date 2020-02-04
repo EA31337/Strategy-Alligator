@@ -26,6 +26,8 @@ INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;                       // A
 INPUT int Alligator_Shift = 2;                                              // Shift
 INPUT int Alligator_SignalOpenMethod = 0;                                   // Signal open method (-63-63)
 INPUT double Alligator_SignalOpenLevel = 36;                                // Signal open level (-49-49)
+INPUT int Alligator_SignalOpenFilterMethod = 36;                            // Signal open filter method
+INPUT int Alligator_SignalOpenBoostMethod = 36;                             // Signal open filter method
 INPUT int Alligator_SignalCloseMethod = 0;                                  // Signal close method (-63-63)
 INPUT double Alligator_SignalCloseLevel = 36;                               // Signal close level (-49-49)
 INPUT int Alligator_PriceLimitMethod = 0;                                   // Price limit method
@@ -45,6 +47,8 @@ struct Stg_Alligator_Params : Stg_Params {
   int Alligator_Shift;
   int Alligator_SignalOpenMethod;
   double Alligator_SignalOpenLevel;
+  int Alligator_SignalOpenFilterMethod;
+  int Alligator_SignalOpenBoostMethod;
   int Alligator_SignalCloseMethod;
   double Alligator_SignalCloseLevel;
   int Alligator_PriceLimitMethod;
@@ -64,6 +68,8 @@ struct Stg_Alligator_Params : Stg_Params {
         Alligator_Shift(::Alligator_Shift),
         Alligator_SignalOpenMethod(::Alligator_SignalOpenMethod),
         Alligator_SignalOpenLevel(::Alligator_SignalOpenLevel),
+        Alligator_SignalOpenFilterMethod(::Alligator_SignalOpenFilterMethod),
+        Alligator_SignalOpenBoostMethod(::Alligator_SignalOpenBoostMethod),
         Alligator_SignalCloseMethod(::Alligator_SignalCloseMethod),
         Alligator_SignalCloseLevel(::Alligator_SignalCloseLevel),
         Alligator_PriceLimitMethod(::Alligator_PriceLimitMethod),
@@ -124,6 +130,8 @@ class Stg_Alligator : public Strategy {
     sparams.logger.SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.Alligator_SignalOpenMethod, _params.Alligator_SignalOpenLevel,
+                       _params.Alligator_SignalOpenFilterMethod, _params.Alligator_SignalOpenFilterMethod,
+
                        _params.Alligator_SignalCloseMethod, _params.Alligator_SignalCloseLevel);
     sparams.SetPriceLimits(_params.Alligator_PriceLimitMethod, _params.Alligator_PriceLimitLevel);
     sparams.SetMaxSpread(_params.Alligator_MaxSpread);
@@ -203,6 +211,38 @@ class Stg_Alligator : public Strategy {
   }
 
   /**
+   * Check strategy's opening signal additional filter.
+   */
+  bool SignalOpenFilter(ENUM_ORDER_TYPE _cmd, int _method = 0) {
+    bool _result = true;
+    if (_method != 0) {
+      // if (METHOD(_method, 0)) _result &= Trade().IsTrend(_cmd);
+      // if (METHOD(_method, 1)) _result &= Trade().IsPivot(_cmd);
+      // if (METHOD(_method, 2)) _result &= Trade().IsPeakHours(_cmd);
+      // if (METHOD(_method, 3)) _result &= Trade().IsRoundNumber(_cmd);
+      // if (METHOD(_method, 4)) _result &= Trade().IsHedging(_cmd);
+      // if (METHOD(_method, 5)) _result &= Trade().IsPeakBar(_cmd);
+    }
+    return _result;
+  }
+
+  /**
+   * Gets strategy's lot size boost (when enabled).
+   */
+  double SignalOpenBoost(ENUM_ORDER_TYPE _cmd, int _method = 0) {
+    bool _result = 1.0;
+    if (_method != 0) {
+      // if (METHOD(_method, 0)) if (Trade().IsTrend(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 1)) if (Trade().IsPivot(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 2)) if (Trade().IsPeakHours(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 3)) if (Trade().IsRoundNumber(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 4)) if (Trade().IsHedging(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 5)) if (Trade().IsPeakBar(_cmd)) _result *= 1.1;
+    }
+    return _result;
+  }
+
+  /**
    * Check strategy's closing signal.
    */
   bool SignalClose(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
@@ -212,9 +252,9 @@ class Stg_Alligator : public Strategy {
   /**
    * Gets price limit value for profit take or stop loss.
    */
-  double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_STG_PRICE_LIMIT_MODE _mode, int _method = 0, double _level = 0.0) {
+  double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, double _level = 0.0) {
     double _trail = _level * Market().GetPipSize();
-    int _direction = Order::OrderDirection(_cmd) * (_mode == LIMIT_VALUE_STOP ? -1 : 1);
+    int _direction = Order::OrderDirection(_cmd) * (_mode == ORDER_TYPE_SL ? -1 : 1);
     double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
     double _result = _default_value;
     double alligator_0_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 0);
