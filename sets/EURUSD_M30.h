@@ -21,7 +21,7 @@ struct Stg_Alligator_EURUSD_M30_Params : Stg_Alligator_Params {
     Alligator_SignalCloseMethod = 0;
     Alligator_SignalCloseLevel = 0.1;
     Alligator_PriceLimitMethod = 0;
-    Alligator_PriceLimitLevel = 0;
+    Alligator_PriceLimitLevel = 10;
     Alligator_MaxSpread = 5;
   }
 } stg_alli_m30;

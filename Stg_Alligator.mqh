@@ -31,7 +31,7 @@ INPUT int Alligator_SignalOpenBoostMethod = 36;                             // S
 INPUT int Alligator_SignalCloseMethod = 0;                                  // Signal close method (-63-63)
 INPUT double Alligator_SignalCloseLevel = 36;                               // Signal close level (-49-49)
 INPUT int Alligator_PriceLimitMethod = 0;                                   // Price limit method
-INPUT double Alligator_PriceLimitLevel = 0;                                 // Price limit level
+INPUT double Alligator_PriceLimitLevel = 10;                                // Price limit level
 INPUT double Alligator_MaxSpread = 0;                                       // Max spread to trade (pips)
 
 // Struct to define strategy parameters to override.
@@ -121,65 +121,56 @@ class Stg_Alligator : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
-    // [x][0] - The Blue line (Alligator's Jaw), [x][1] - The Red Line (Alligator's Teeth), [x][2] - The Green Line
-    // (Alligator's Lips)
-    bool _result = false;
-    double alligator_0_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 0);
-    double alligator_0_teeth = ((Indi_Alligator *)this.Data()).GetValue(LINE_TEETH, 0);
-    double alligator_0_lips = ((Indi_Alligator *)this.Data()).GetValue(LINE_LIPS, 0);
-    double alligator_1_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 1);
-    double alligator_1_teeth = ((Indi_Alligator *)this.Data()).GetValue(LINE_TEETH, 1);
-    double alligator_1_lips = ((Indi_Alligator *)this.Data()).GetValue(LINE_LIPS, 1);
-    double alligator_2_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 2);
-    double alligator_2_teeth = ((Indi_Alligator *)this.Data()).GetValue(LINE_TEETH, 2);
-    double alligator_2_lips = ((Indi_Alligator *)this.Data()).GetValue(LINE_LIPS, 2);
+    Indicator *_indi = Data();
+    bool _is_valid = _indi[CURR].IsValid();
+    bool _result = _is_valid;
     double _level_pips = _level * Chart().GetPipSize();
     switch (_cmd) {
       case ORDER_TYPE_BUY:
-        _result = (alligator_0_lips > alligator_0_teeth + _level_pips &&  // Check if Lips are above Teeth ...
-                   alligator_0_teeth > alligator_0_jaw + _level_pips      // ... Teeth are above Jaw ...
+        _result = (_indi[CURR].value[LINE_LIPS] > _indi[CURR].value[LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
+                   _indi[CURR].value[LINE_TEETH] > _indi[CURR].value[LINE_JAW] + _level_pips      // ... Teeth are above Jaw ...
         );
         if (_method != 0) {
           if (METHOD(_method, 0))
-            _result &= (alligator_0_lips > alligator_1_lips &&    // Check if Lips increased.
-                        alligator_0_teeth > alligator_1_teeth &&  // Check if Teeth increased.
-                        alligator_0_jaw > alligator_1_jaw         // // Check if Jaw increased.
+            _result &= (_indi[CURR].value[LINE_LIPS] > _indi[PREV].value[LINE_LIPS] &&    // Check if Lips increased.
+                        _indi[CURR].value[LINE_TEETH] > _indi[PREV].value[LINE_TEETH] &&  // Check if Teeth increased.
+                        _indi[CURR].value[LINE_JAW] > _indi[PREV].value[LINE_JAW]         // // Check if Jaw increased.
             );
           if (METHOD(_method, 1))
-            _result &= (alligator_1_lips > alligator_2_lips &&    // Check if Lips increased.
-                        alligator_1_teeth > alligator_2_teeth &&  // Check if Teeth increased.
-                        alligator_1_jaw > alligator_2_jaw         // // Check if Jaw increased.
+            _result &= (_indi[PREV].value[LINE_LIPS] > _indi[PPREV].value[LINE_LIPS] &&    // Check if Lips increased.
+                        _indi[PREV].value[LINE_TEETH] > _indi[PPREV].value[LINE_TEETH] &&  // Check if Teeth increased.
+                        _indi[PREV].value[LINE_JAW] > _indi[PPREV].value[LINE_JAW]         // // Check if Jaw increased.
             );
-          if (METHOD(_method, 2)) _result &= alligator_0_lips > alligator_2_lips;  // Check if Lips increased.
-          if (METHOD(_method, 3)) _result &= alligator_0_lips - alligator_0_teeth > alligator_0_teeth - alligator_0_jaw;
+          if (METHOD(_method, 2)) _result &= _indi[CURR].value[LINE_LIPS] > _indi[PPREV].value[LINE_LIPS];  // Check if Lips increased.
+          if (METHOD(_method, 3)) _result &= _indi[CURR].value[LINE_LIPS] - _indi[CURR].value[LINE_TEETH] > _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_JAW];
           if (METHOD(_method, 4))
-            _result &= (alligator_2_lips <= alligator_2_teeth ||  // Check if Lips are below Teeth and ...
-                        alligator_2_lips <= alligator_2_jaw ||    // ... Lips are below Jaw and ...
-                        alligator_2_teeth <= alligator_2_jaw      // ... Teeth are below Jaw ...
+            _result &= (_indi[PPREV].value[LINE_LIPS] <= _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are below Teeth and ...
+                        _indi[PPREV].value[LINE_LIPS] <= _indi[PPREV].value[LINE_JAW] ||    // ... Lips are below Jaw and ...
+                        _indi[PPREV].value[LINE_TEETH] <= _indi[PPREV].value[LINE_JAW]      // ... Teeth are below Jaw ...
             );
         }
         break;
       case ORDER_TYPE_SELL:
-        _result = (alligator_0_lips + _level_pips < alligator_0_teeth &&  // Check if Lips are below Teeth and ...
-                   alligator_0_teeth + _level_pips < alligator_0_jaw      // ... Teeth are below Jaw ...
+        _result = (_indi[CURR].value[LINE_LIPS] + _level_pips < _indi[CURR].value[LINE_TEETH] &&  // Check if Lips are below Teeth and ...
+                   _indi[CURR].value[LINE_TEETH] + _level_pips < _indi[CURR].value[LINE_JAW]      // ... Teeth are below Jaw ...
         );
         if (_method != 0) {
           if (METHOD(_method, 0))
-            _result &= (alligator_0_lips < alligator_1_lips &&    // Check if Lips decreased.
-                        alligator_0_teeth < alligator_1_teeth &&  // Check if Teeth decreased.
-                        alligator_0_jaw < alligator_1_jaw         // // Check if Jaw decreased.
+            _result &= (_indi[CURR].value[LINE_LIPS] < _indi[PREV].value[LINE_LIPS] &&    // Check if Lips decreased.
+                        _indi[CURR].value[LINE_TEETH] < _indi[PREV].value[LINE_TEETH] &&  // Check if Teeth decreased.
+                        _indi[CURR].value[LINE_JAW] < _indi[PREV].value[LINE_JAW]         // // Check if Jaw decreased.
             );
           if (METHOD(_method, 1))
-            _result &= (alligator_1_lips < alligator_2_lips &&    // Check if Lips decreased.
-                        alligator_1_teeth < alligator_2_teeth &&  // Check if Teeth decreased.
-                        alligator_1_jaw < alligator_2_jaw         // // Check if Jaw decreased.
+            _result &= (_indi[PREV].value[LINE_LIPS] < _indi[PPREV].value[LINE_LIPS] &&    // Check if Lips decreased.
+                        _indi[PREV].value[LINE_TEETH] < _indi[PPREV].value[LINE_TEETH] &&  // Check if Teeth decreased.
+                        _indi[PREV].value[LINE_JAW] < _indi[PPREV].value[LINE_JAW]         // // Check if Jaw decreased.
             );
-          if (METHOD(_method, 2)) _result &= alligator_0_lips < alligator_2_lips;  // Check if Lips decreased.
-          if (METHOD(_method, 3)) _result &= alligator_0_teeth - alligator_0_lips > alligator_0_jaw - alligator_0_teeth;
+          if (METHOD(_method, 2)) _result &= _indi[CURR].value[LINE_LIPS] < _indi[PPREV].value[LINE_LIPS];  // Check if Lips decreased.
+          if (METHOD(_method, 3)) _result &= _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_LIPS] > _indi[CURR].value[LINE_JAW] - _indi[CURR].value[LINE_TEETH];
           if (METHOD(_method, 4))
-            _result &= (alligator_2_lips >= alligator_2_teeth ||  // Check if Lips are above Teeth ...
-                        alligator_2_lips >= alligator_2_jaw ||    // ... Lips are above Jaw ...
-                        alligator_2_teeth >= alligator_2_jaw      // ... Teeth are above Jaw ...
+            _result &= (_indi[PPREV].value[LINE_LIPS] >= _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are above Teeth ...
+                        _indi[PPREV].value[LINE_LIPS] >= _indi[PPREV].value[LINE_JAW] ||    // ... Lips are above Jaw ...
+                        _indi[PPREV].value[LINE_TEETH] >= _indi[PPREV].value[LINE_JAW]      // ... Teeth are above Jaw ...
             );
         }
         break;
@@ -230,46 +221,39 @@ class Stg_Alligator : public Strategy {
    * Gets price limit value for profit take or stop loss.
    */
   double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, double _level = 0.0) {
+    Indicator *_indi = Data();
+    bool _is_valid = _indi[CURR].IsValid();
     double _trail = _level * Market().GetPipSize();
-    int _direction = Order::OrderDirection(_cmd) * (_mode == ORDER_TYPE_SL ? -1 : 1);
+    int _direction = Order::OrderDirection(_cmd, _mode);
     double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
     double _result = _default_value;
-    double alligator_0_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 0);
-    double alligator_0_teeth = ((Indi_Alligator *)this.Data()).GetValue(LINE_TEETH, 0);
-    double alligator_0_lips = ((Indi_Alligator *)this.Data()).GetValue(LINE_LIPS, 0);
-    double alligator_1_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 1);
-    double alligator_1_teeth = ((Indi_Alligator *)this.Data()).GetValue(LINE_TEETH, 1);
-    double alligator_1_lips = ((Indi_Alligator *)this.Data()).GetValue(LINE_LIPS, 1);
-    double alligator_2_jaw = ((Indi_Alligator *)this.Data()).GetValue(LINE_JAW, 2);
-    double alligator_2_teeth = ((Indi_Alligator *)this.Data()).GetValue(LINE_TEETH, 2);
-    double alligator_2_lips = ((Indi_Alligator *)this.Data()).GetValue(LINE_LIPS, 2);
     switch (_method) {
       case 0: {
-        _result = alligator_0_jaw + _trail * _direction;
+        _result = _indi[CURR].value[LINE_JAW] + _trail * _direction;
       }
       case 1: {
-        _result = alligator_0_teeth + _trail * _direction;
+        _result = _indi[CURR].value[LINE_TEETH] + _trail * _direction;
       }
       case 2: {
-        _result = alligator_0_lips + _trail * _direction;
+        _result = _indi[CURR].value[LINE_LIPS] + _trail * _direction;
       }
       case 3: {
-        _result = alligator_1_jaw + _trail * _direction;
+        _result = _indi[PREV].value[LINE_JAW] + _trail * _direction;
       }
       case 4: {
-        _result = alligator_1_teeth + _trail * _direction;
+        _result = _indi[PREV].value[LINE_TEETH] + _trail * _direction;
       }
       case 5: {
-        _result = alligator_1_lips + _trail * _direction;
+        _result = _indi[PREV].value[LINE_LIPS] + _trail * _direction;
       }
       case 6: {
-        _result = alligator_2_jaw + _trail * _direction;
+        _result = _indi[PPREV].value[LINE_JAW] + _trail * _direction;
       }
       case 7: {
-        _result = alligator_2_teeth + _trail * _direction;
+        _result = _indi[PPREV].value[LINE_TEETH] + _trail * _direction;
       }
       case 8: {
-        _result = alligator_2_lips + _trail * _direction;
+        _result = _indi[PPREV].value[LINE_LIPS] + _trail * _direction;
       }
     }
     return _result;
