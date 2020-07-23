@@ -104,7 +104,7 @@ class Stg_Alligator : public Strategy {
                                  _params.Alligator_MA_Method, _params.Alligator_Applied_Price);
     alli_params.SetTf(_tf);
     StgParams sparams(new Trade(_tf, _Symbol), new Indi_Alligator(alli_params), NULL, NULL);
-    sparams.logger.SetLevel(_log_level);
+    sparams.logger.Ptr().SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.Alligator_SignalOpenMethod, _params.Alligator_SignalOpenLevel,
                        _params.Alligator_SignalOpenFilterMethod, _params.Alligator_SignalOpenFilterMethod,
