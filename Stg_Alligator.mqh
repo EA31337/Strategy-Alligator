@@ -14,14 +14,14 @@ INPUT ENUM_MA_METHOD Alligator_MA_Method = 2;          // MA Method
 INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;  // Applied Price
 INPUT int Alligator_Shift = 2;                         // Shift
 INPUT int Alligator_SignalOpenMethod = 0;              // Signal open method (-63-63)
-INPUT float Alligator_SignalOpenLevel = 36;           // Signal open level (-49-49)
+INPUT float Alligator_SignalOpenLevel = 36;            // Signal open level (-49-49)
 INPUT int Alligator_SignalOpenFilterMethod = 36;       // Signal open filter method
 INPUT int Alligator_SignalOpenBoostMethod = 36;        // Signal open filter method
 INPUT int Alligator_SignalCloseMethod = 0;             // Signal close method (-63-63)
-INPUT float Alligator_SignalCloseLevel = 36;          // Signal close level (-49-49)
+INPUT float Alligator_SignalCloseLevel = 36;           // Signal close level (-49-49)
 INPUT int Alligator_PriceLimitMethod = 0;              // Price limit method
-INPUT float Alligator_PriceLimitLevel = 10;           // Price limit level
-INPUT float Alligator_MaxSpread = 0;                  // Max spread to trade (pips)
+INPUT float Alligator_PriceLimitLevel = 10;            // Price limit level
+INPUT float Alligator_MaxSpread = 0;                   // Max spread to trade (pips)
 
 // Includes.
 #include <EA31337-classes/Indicators/Indi_Alligator.mqh>
@@ -39,14 +39,14 @@ struct Stg_Alligator_Params : StgParams {
   ENUM_APPLIED_PRICE Alligator_Applied_Price;
   int Alligator_Shift;
   int Alligator_SignalOpenMethod;
-  double Alligator_SignalOpenLevel;
+  float Alligator_SignalOpenLevel;
   int Alligator_SignalOpenFilterMethod;
   int Alligator_SignalOpenBoostMethod;
   int Alligator_SignalCloseMethod;
-  double Alligator_SignalCloseLevel;
+  float Alligator_SignalCloseLevel;
   int Alligator_PriceLimitMethod;
-  double Alligator_PriceLimitLevel;
-  double Alligator_MaxSpread;
+  float Alligator_PriceLimitLevel;
+  float Alligator_MaxSpread;
 
   // Constructor: Set default param values.
   Stg_Alligator_Params()
@@ -241,6 +241,6 @@ class Stg_Alligator : public Strategy {
         break;
       }
     }
-    return _result;
+    return (float)_result;
   }
 };
