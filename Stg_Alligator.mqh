@@ -1,38 +1,31 @@
-//+------------------------------------------------------------------+
-//|                  EA31337 - multi-strategy advanced trading robot |
-//|                       Copyright 2016-2020, 31337 Investments Ltd |
-//|                                       https://github.com/EA31337 |
-//+------------------------------------------------------------------+
-
 /**
  * @file
  * Implements Alligator strategy based on the Alligator indicator.
  */
 
+// User input params.
+INPUT int Alligator_Period_Jaw = 16;                   // Jaw Period
+INPUT int Alligator_Period_Teeth = 8;                  // Teeth Period
+INPUT int Alligator_Period_Lips = 6;                   // Lips Period
+INPUT int Alligator_Shift_Jaw = 5;                     // Jaw Shift
+INPUT int Alligator_Shift_Teeth = 7;                   // Teeth Shift
+INPUT int Alligator_Shift_Lips = 5;                    // Lips Shift
+INPUT ENUM_MA_METHOD Alligator_MA_Method = 2;          // MA Method
+INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;  // Applied Price
+INPUT int Alligator_Shift = 2;                         // Shift
+INPUT int Alligator_SignalOpenMethod = 0;              // Signal open method (-63-63)
+INPUT float Alligator_SignalOpenLevel = 36;           // Signal open level (-49-49)
+INPUT int Alligator_SignalOpenFilterMethod = 36;       // Signal open filter method
+INPUT int Alligator_SignalOpenBoostMethod = 36;        // Signal open filter method
+INPUT int Alligator_SignalCloseMethod = 0;             // Signal close method (-63-63)
+INPUT float Alligator_SignalCloseLevel = 36;          // Signal close level (-49-49)
+INPUT int Alligator_PriceLimitMethod = 0;              // Price limit method
+INPUT float Alligator_PriceLimitLevel = 10;           // Price limit level
+INPUT float Alligator_MaxSpread = 0;                  // Max spread to trade (pips)
+
 // Includes.
 #include <EA31337-classes/Indicators/Indi_Alligator.mqh>
 #include <EA31337-classes/Strategy.mqh>
-
-// User input params.
-INPUT string __Alligator_Parameters__ = "-- Alligator strategy params --";  // >>> ALLIGATOR <<<
-INPUT int Alligator_Period_Jaw = 16;                                        // Jaw Period
-INPUT int Alligator_Period_Teeth = 8;                                       // Teeth Period
-INPUT int Alligator_Period_Lips = 6;                                        // Lips Period
-INPUT int Alligator_Shift_Jaw = 5;                                          // Jaw Shift
-INPUT int Alligator_Shift_Teeth = 7;                                        // Teeth Shift
-INPUT int Alligator_Shift_Lips = 5;                                         // Lips Shift
-INPUT ENUM_MA_METHOD Alligator_MA_Method = 2;                               // MA Method
-INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;                       // Applied Price
-INPUT int Alligator_Shift = 2;                                              // Shift
-INPUT int Alligator_SignalOpenMethod = 0;                                   // Signal open method (-63-63)
-INPUT double Alligator_SignalOpenLevel = 36;                                // Signal open level (-49-49)
-INPUT int Alligator_SignalOpenFilterMethod = 36;                            // Signal open filter method
-INPUT int Alligator_SignalOpenBoostMethod = 36;                             // Signal open filter method
-INPUT int Alligator_SignalCloseMethod = 0;                                  // Signal close method (-63-63)
-INPUT double Alligator_SignalCloseLevel = 36;                               // Signal close level (-49-49)
-INPUT int Alligator_PriceLimitMethod = 0;                                   // Price limit method
-INPUT double Alligator_PriceLimitLevel = 10;                                // Price limit level
-INPUT double Alligator_MaxSpread = 0;                                       // Max spread to trade (pips)
 
 // Struct to define strategy parameters to override.
 struct Stg_Alligator_Params : StgParams {
@@ -99,9 +92,9 @@ class Stg_Alligator : public Strategy {
     }
     // Initialize strategy parameters.
     AlligatorParams alli_params(_params.Alligator_Period_Jaw, _params.Alligator_Shift_Jaw,
-                                 _params.Alligator_Period_Teeth, _params.Alligator_Shift_Teeth,
-                                 _params.Alligator_Period_Lips, _params.Alligator_Shift_Lips,
-                                 _params.Alligator_MA_Method, _params.Alligator_Applied_Price);
+                                _params.Alligator_Period_Teeth, _params.Alligator_Shift_Teeth,
+                                _params.Alligator_Period_Lips, _params.Alligator_Shift_Lips,
+                                _params.Alligator_MA_Method, _params.Alligator_Applied_Price);
     alli_params.SetTf(_tf);
     StgParams sparams(new Trade(_tf, _Symbol), new Indi_Alligator(alli_params), NULL, NULL);
     sparams.logger.Ptr().SetLevel(_log_level);
@@ -120,16 +113,18 @@ class Stg_Alligator : public Strategy {
   /**
    * Check strategy's opening signal.
    */
-  bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
+  bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0) {
     Indi_Alligator *_indi = Data();
     bool _is_valid = _indi[CURR].IsValid();
     bool _result = _is_valid;
     double _level_pips = _level * Chart().GetPipSize();
     switch (_cmd) {
       case ORDER_TYPE_BUY:
-        _result = (_indi[CURR].value[LINE_LIPS] > _indi[CURR].value[LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
-                   _indi[CURR].value[LINE_TEETH] > _indi[CURR].value[LINE_JAW] + _level_pips      // ... Teeth are above Jaw ...
-        );
+        _result =
+            (_indi[CURR].value[LINE_LIPS] >
+                 _indi[CURR].value[LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
+             _indi[CURR].value[LINE_TEETH] > _indi[CURR].value[LINE_JAW] + _level_pips  // ... Teeth are above Jaw ...
+            );
         if (_method != 0) {
           if (METHOD(_method, 0))
             _result &= (_indi[CURR].value[LINE_LIPS] > _indi[PREV].value[LINE_LIPS] &&    // Check if Lips increased.
@@ -141,19 +136,26 @@ class Stg_Alligator : public Strategy {
                         _indi[PREV].value[LINE_TEETH] > _indi[PPREV].value[LINE_TEETH] &&  // Check if Teeth increased.
                         _indi[PREV].value[LINE_JAW] > _indi[PPREV].value[LINE_JAW]         // // Check if Jaw increased.
             );
-          if (METHOD(_method, 2)) _result &= _indi[CURR].value[LINE_LIPS] > _indi[PPREV].value[LINE_LIPS];  // Check if Lips increased.
-          if (METHOD(_method, 3)) _result &= _indi[CURR].value[LINE_LIPS] - _indi[CURR].value[LINE_TEETH] > _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_JAW];
+          if (METHOD(_method, 2))
+            _result &= _indi[CURR].value[LINE_LIPS] > _indi[PPREV].value[LINE_LIPS];  // Check if Lips increased.
+          if (METHOD(_method, 3))
+            _result &= _indi[CURR].value[LINE_LIPS] - _indi[CURR].value[LINE_TEETH] >
+                       _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_JAW];
           if (METHOD(_method, 4))
-            _result &= (_indi[PPREV].value[LINE_LIPS] <= _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are below Teeth and ...
-                        _indi[PPREV].value[LINE_LIPS] <= _indi[PPREV].value[LINE_JAW] ||    // ... Lips are below Jaw and ...
-                        _indi[PPREV].value[LINE_TEETH] <= _indi[PPREV].value[LINE_JAW]      // ... Teeth are below Jaw ...
-            );
+            _result &=
+                (_indi[PPREV].value[LINE_LIPS] <=
+                     _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are below Teeth and ...
+                 _indi[PPREV].value[LINE_LIPS] <= _indi[PPREV].value[LINE_JAW] ||  // ... Lips are below Jaw and ...
+                 _indi[PPREV].value[LINE_TEETH] <= _indi[PPREV].value[LINE_JAW]    // ... Teeth are below Jaw ...
+                );
         }
         break;
       case ORDER_TYPE_SELL:
-        _result = (_indi[CURR].value[LINE_LIPS] + _level_pips < _indi[CURR].value[LINE_TEETH] &&  // Check if Lips are below Teeth and ...
-                   _indi[CURR].value[LINE_TEETH] + _level_pips < _indi[CURR].value[LINE_JAW]      // ... Teeth are below Jaw ...
-        );
+        _result =
+            (_indi[CURR].value[LINE_LIPS] + _level_pips <
+                 _indi[CURR].value[LINE_TEETH] &&  // Check if Lips are below Teeth and ...
+             _indi[CURR].value[LINE_TEETH] + _level_pips < _indi[CURR].value[LINE_JAW]  // ... Teeth are below Jaw ...
+            );
         if (_method != 0) {
           if (METHOD(_method, 0))
             _result &= (_indi[CURR].value[LINE_LIPS] < _indi[PREV].value[LINE_LIPS] &&    // Check if Lips decreased.
@@ -165,12 +167,16 @@ class Stg_Alligator : public Strategy {
                         _indi[PREV].value[LINE_TEETH] < _indi[PPREV].value[LINE_TEETH] &&  // Check if Teeth decreased.
                         _indi[PREV].value[LINE_JAW] < _indi[PPREV].value[LINE_JAW]         // // Check if Jaw decreased.
             );
-          if (METHOD(_method, 2)) _result &= _indi[CURR].value[LINE_LIPS] < _indi[PPREV].value[LINE_LIPS];  // Check if Lips decreased.
-          if (METHOD(_method, 3)) _result &= _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_LIPS] > _indi[CURR].value[LINE_JAW] - _indi[CURR].value[LINE_TEETH];
+          if (METHOD(_method, 2))
+            _result &= _indi[CURR].value[LINE_LIPS] < _indi[PPREV].value[LINE_LIPS];  // Check if Lips decreased.
+          if (METHOD(_method, 3))
+            _result &= _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_LIPS] >
+                       _indi[CURR].value[LINE_JAW] - _indi[CURR].value[LINE_TEETH];
           if (METHOD(_method, 4))
-            _result &= (_indi[PPREV].value[LINE_LIPS] >= _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are above Teeth ...
-                        _indi[PPREV].value[LINE_LIPS] >= _indi[PPREV].value[LINE_JAW] ||    // ... Lips are above Jaw ...
-                        _indi[PPREV].value[LINE_TEETH] >= _indi[PPREV].value[LINE_JAW]      // ... Teeth are above Jaw ...
+            _result &= (_indi[PPREV].value[LINE_LIPS] >=
+                            _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are above Teeth ...
+                        _indi[PPREV].value[LINE_LIPS] >= _indi[PPREV].value[LINE_JAW] ||  // ... Lips are above Jaw ...
+                        _indi[PPREV].value[LINE_TEETH] >= _indi[PPREV].value[LINE_JAW]    // ... Teeth are above Jaw ...
             );
         }
         break;
@@ -179,48 +185,9 @@ class Stg_Alligator : public Strategy {
   }
 
   /**
-   * Check strategy's opening signal additional filter.
-   */
-  bool SignalOpenFilter(ENUM_ORDER_TYPE _cmd, int _method = 0) {
-    bool _result = true;
-    if (_method != 0) {
-      // if (METHOD(_method, 0)) _result &= Trade().IsTrend(_cmd);
-      // if (METHOD(_method, 1)) _result &= Trade().IsPivot(_cmd);
-      // if (METHOD(_method, 2)) _result &= Trade().IsPeakHours(_cmd);
-      // if (METHOD(_method, 3)) _result &= Trade().IsRoundNumber(_cmd);
-      // if (METHOD(_method, 4)) _result &= Trade().IsHedging(_cmd);
-      // if (METHOD(_method, 5)) _result &= Trade().IsPeakBar(_cmd);
-    }
-    return _result;
-  }
-
-  /**
-   * Gets strategy's lot size boost (when enabled).
-   */
-  double SignalOpenBoost(ENUM_ORDER_TYPE _cmd, int _method = 0) {
-    bool _result = 1.0;
-    if (_method != 0) {
-      // if (METHOD(_method, 0)) if (Trade().IsTrend(_cmd)) _result *= 1.1;
-      // if (METHOD(_method, 1)) if (Trade().IsPivot(_cmd)) _result *= 1.1;
-      // if (METHOD(_method, 2)) if (Trade().IsPeakHours(_cmd)) _result *= 1.1;
-      // if (METHOD(_method, 3)) if (Trade().IsRoundNumber(_cmd)) _result *= 1.1;
-      // if (METHOD(_method, 4)) if (Trade().IsHedging(_cmd)) _result *= 1.1;
-      // if (METHOD(_method, 5)) if (Trade().IsPeakBar(_cmd)) _result *= 1.1;
-    }
-    return _result;
-  }
-
-  /**
-   * Check strategy's closing signal.
-   */
-  bool SignalClose(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
-    return SignalOpen(Order::NegateOrderType(_cmd), _method, _level);
-  }
-
-  /**
    * Gets price limit value for profit take or stop loss.
    */
-  double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, double _level = 0.0) {
+  float PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
     Indi_Alligator *_indi = Data();
     bool _is_valid = _indi[CURR].IsValid();
     double _trail = _level * Market().GetPipSize();
@@ -256,18 +223,21 @@ class Stg_Alligator : public Strategy {
         _result = _indi[PPREV].value[LINE_LIPS] + _trail * _direction;
         break;
       case 9: {
-        int _bar_count = (int) _level * (int) _indi.GetLipsPeriod();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count)) : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+        int _bar_count = (int)_level * (int)_indi.GetLipsPeriod();
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
         break;
       }
       case 10: {
-        int _bar_count = (int) _level * (int) _indi.GetTeethShift();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count)) : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+        int _bar_count = (int)_level * (int)_indi.GetTeethShift();
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
         break;
       }
       case 11: {
-        int _bar_count = (int) _level * (int) _indi.GetJawPeriod();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count)) : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+        int _bar_count = (int)_level * (int)_indi.GetJawPeriod();
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
         break;
       }
     }
