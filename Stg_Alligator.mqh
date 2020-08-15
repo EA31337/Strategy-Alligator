@@ -3,77 +3,76 @@
  * Implements Alligator strategy based on the Alligator indicator.
  */
 
-// User input params.
-INPUT int Alligator_Period_Jaw = 16;                   // Jaw Period
-INPUT int Alligator_Period_Teeth = 8;                  // Teeth Period
-INPUT int Alligator_Period_Lips = 6;                   // Lips Period
-INPUT int Alligator_Shift_Jaw = 5;                     // Jaw Shift
-INPUT int Alligator_Shift_Teeth = 7;                   // Teeth Shift
-INPUT int Alligator_Shift_Lips = 5;                    // Lips Shift
-INPUT ENUM_MA_METHOD Alligator_MA_Method = 2;          // MA Method
-INPUT ENUM_APPLIED_PRICE Alligator_Applied_Price = 4;  // Applied Price
-INPUT int Alligator_Shift = 2;                         // Shift
-INPUT int Alligator_SignalOpenMethod = 0;              // Signal open method (-63-63)
-INPUT float Alligator_SignalOpenLevel = 36;            // Signal open level (-49-49)
-INPUT int Alligator_SignalOpenFilterMethod = 36;       // Signal open filter method
-INPUT int Alligator_SignalOpenBoostMethod = 36;        // Signal open filter method
-INPUT int Alligator_SignalCloseMethod = 0;             // Signal close method (-63-63)
-INPUT float Alligator_SignalCloseLevel = 36;           // Signal close level (-49-49)
-INPUT int Alligator_PriceLimitMethod = 0;              // Price limit method
-INPUT float Alligator_PriceLimitLevel = 10;            // Price limit level
-INPUT float Alligator_MaxSpread = 0;                   // Max spread to trade (pips)
-
 // Includes.
 #include <EA31337-classes/Indicators/Indi_Alligator.mqh>
 #include <EA31337-classes/Strategy.mqh>
 
+// User input params.
+INPUT float Alligator_LotSize = 0;                // Lot size
+INPUT int Alligator_SignalOpenMethod = 0;         // Signal open method (-63-63)
+INPUT float Alligator_SignalOpenLevel = 36;       // Signal open level (-49-49)
+INPUT int Alligator_SignalOpenFilterMethod = 36;  // Signal open filter method
+INPUT int Alligator_SignalOpenBoostMethod = 36;   // Signal open filter method
+INPUT int Alligator_SignalCloseMethod = 0;        // Signal close method (-63-63)
+INPUT float Alligator_SignalCloseLevel = 36;      // Signal close level (-49-49)
+INPUT int Alligator_PriceLimitMethod = 0;         // Price limit method
+INPUT float Alligator_PriceLimitLevel = 10;       // Price limit level
+INPUT int Alligator_TickFilterMethod = 0;         // Tick filter method
+INPUT float Alligator_MaxSpread = 0;              // Max spread to trade (pips)
+INPUT int Alligator_Shift = 2;                    // Shift
+INPUT string __Alligator_Indi_Alligator_Parameters__ =
+    "-- Alligator strategy: Alligator indicator params --";  // >>> Alligator strategy: Alligator indicator <<<
+INPUT int Indi_Alligator_Period_Jaw = 16;                    // Jaw Period
+INPUT int Indi_Alligator_Period_Teeth = 8;                   // Teeth Period
+INPUT int Indi_Alligator_Period_Lips = 6;                    // Lips Period
+INPUT int Indi_Alligator_Shift_Jaw = 5;                      // Jaw Shift
+INPUT int Indi_Alligator_Shift_Teeth = 7;                    // Teeth Shift
+INPUT int Indi_Alligator_Shift_Lips = 5;                     // Lips Shift
+INPUT ENUM_MA_METHOD Indi_Alligator_MA_Method = 2;           // MA Method
+INPUT ENUM_APPLIED_PRICE Indi_Alligator_Applied_Price = 4;   // Applied Price
+
+// Structs.
+
+// Defines struct with default user indicator values.
+struct Indi_Alligator_Params_Defaults : AlligatorParams {
+  Indi_Alligator_Params_Defaults()
+      : AlligatorParams(::Indi_Alligator_Period_Jaw, ::Indi_Alligator_Shift_Jaw, ::Indi_Alligator_Period_Teeth,
+                        ::Indi_Alligator_Shift_Teeth, ::Indi_Alligator_Period_Lips, ::Indi_Alligator_Shift_Lips,
+                        ::Indi_Alligator_MA_Method, ::Indi_Alligator_Applied_Price) {}
+} indi_alli_defaults;
+
+// Defines struct to store indicator parameter values.
+struct Indi_Alligator_Params : public AlligatorParams {
+  // Struct constructors.
+  void Indi_Alligator_Params(AlligatorParams &_params, ENUM_TIMEFRAMES _tf) : AlligatorParams(_params, _tf) {}
+};
+
+// Defines struct with default user strategy values.
+struct Stg_Alligator_Params_Defaults : StgParams {
+  Stg_Alligator_Params_Defaults()
+      : StgParams(::Alligator_SignalOpenMethod, ::Alligator_SignalOpenFilterMethod, ::Alligator_SignalOpenLevel,
+                  ::Alligator_SignalOpenBoostMethod, ::Alligator_SignalCloseMethod, ::Alligator_SignalCloseLevel,
+                  ::Alligator_PriceLimitMethod, ::Alligator_PriceLimitLevel, ::Alligator_TickFilterMethod,
+                  ::Alligator_MaxSpread, ::Alligator_Shift) {}
+} stg_alli_defaults;
+
 // Struct to define strategy parameters to override.
 struct Stg_Alligator_Params : StgParams {
-  unsigned int Alligator_Period_Jaw;
-  unsigned int Alligator_Period_Teeth;
-  unsigned int Alligator_Period_Lips;
-  int Alligator_Shift_Jaw;
-  int Alligator_Shift_Teeth;
-  int Alligator_Shift_Lips;
-  ENUM_MA_METHOD Alligator_MA_Method;
-  ENUM_APPLIED_PRICE Alligator_Applied_Price;
-  int Alligator_Shift;
-  int Alligator_SignalOpenMethod;
-  float Alligator_SignalOpenLevel;
-  int Alligator_SignalOpenFilterMethod;
-  int Alligator_SignalOpenBoostMethod;
-  int Alligator_SignalCloseMethod;
-  float Alligator_SignalCloseLevel;
-  int Alligator_PriceLimitMethod;
-  float Alligator_PriceLimitLevel;
-  float Alligator_MaxSpread;
+  Indi_Alligator_Params iparams;
+  StgParams sparams;
 
-  // Constructor: Set default param values.
-  Stg_Alligator_Params()
-      : Alligator_Period_Jaw(::Alligator_Period_Jaw),
-        Alligator_Period_Teeth(::Alligator_Period_Teeth),
-        Alligator_Period_Lips(::Alligator_Period_Lips),
-        Alligator_Shift_Jaw(::Alligator_Shift_Jaw),
-        Alligator_Shift_Teeth(::Alligator_Shift_Teeth),
-        Alligator_Shift_Lips(::Alligator_Shift_Lips),
-        Alligator_MA_Method(::Alligator_MA_Method),
-        Alligator_Applied_Price(::Alligator_Applied_Price),
-        Alligator_Shift(::Alligator_Shift),
-        Alligator_SignalOpenMethod(::Alligator_SignalOpenMethod),
-        Alligator_SignalOpenLevel(::Alligator_SignalOpenLevel),
-        Alligator_SignalOpenFilterMethod(::Alligator_SignalOpenFilterMethod),
-        Alligator_SignalOpenBoostMethod(::Alligator_SignalOpenBoostMethod),
-        Alligator_SignalCloseMethod(::Alligator_SignalCloseMethod),
-        Alligator_SignalCloseLevel(::Alligator_SignalCloseLevel),
-        Alligator_PriceLimitMethod(::Alligator_PriceLimitMethod),
-        Alligator_PriceLimitLevel(::Alligator_PriceLimitLevel),
-        Alligator_MaxSpread(::Alligator_MaxSpread) {}
-  void Init() {}
+  // Struct constructors.
+  Stg_Alligator_Params(Indi_Alligator_Params &_iparams, StgParams &_sparams)
+      : iparams(indi_alli_defaults, _iparams.tf), sparams(stg_alli_defaults) {
+    iparams = _iparams;
+    sparams = _sparams;
+  }
 };
 
 // Loads pair specific param values.
 #include "sets/EURUSD_H1.h"
 #include "sets/EURUSD_H4.h"
+#include "sets/EURUSD_H8.h"
 #include "sets/EURUSD_M1.h"
 #include "sets/EURUSD_M15.h"
 #include "sets/EURUSD_M30.h"
@@ -85,28 +84,24 @@ class Stg_Alligator : public Strategy {
 
   static Stg_Alligator *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
-    Stg_Alligator_Params _params;
+    Indi_Alligator_Params _indi_params(indi_alli_defaults, _tf);
+    StgParams _stg_params(stg_alli_defaults);
     if (!Terminal::IsOptimization()) {
-      SetParamsByTf<Stg_Alligator_Params>(_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30,
-                                          stg_alli_h1, stg_alli_h4, stg_alli_h4);
+      SetParamsByTf<Indi_Alligator_Params>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
+                                           indi_alli_h1, indi_alli_h4, indi_alli_h8);
+      SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
+                               stg_alli_h4, stg_alli_h8);
     }
+    // Initialize indicator.
+    AlligatorParams alli_params(_indi_params);
+    _stg_params.SetIndicator(new Indi_Alligator(_indi_params));
     // Initialize strategy parameters.
-    AlligatorParams alli_params(_params.Alligator_Period_Jaw, _params.Alligator_Shift_Jaw,
-                                _params.Alligator_Period_Teeth, _params.Alligator_Shift_Teeth,
-                                _params.Alligator_Period_Lips, _params.Alligator_Shift_Lips,
-                                _params.Alligator_MA_Method, _params.Alligator_Applied_Price);
-    alli_params.SetTf(_tf);
-    StgParams sparams(new Trade(_tf, _Symbol), new Indi_Alligator(alli_params), NULL, NULL);
-    sparams.logger.Ptr().SetLevel(_log_level);
-    sparams.SetMagicNo(_magic_no);
-    sparams.SetSignals(_params.Alligator_SignalOpenMethod, _params.Alligator_SignalOpenLevel,
-                       _params.Alligator_SignalOpenFilterMethod, _params.Alligator_SignalOpenFilterMethod,
-
-                       _params.Alligator_SignalCloseMethod, _params.Alligator_SignalCloseLevel);
-    sparams.SetPriceLimits(_params.Alligator_PriceLimitMethod, _params.Alligator_PriceLimitLevel);
-    sparams.SetMaxSpread(_params.Alligator_MaxSpread);
+    _stg_params.GetLog().SetLevel(_log_level);
+    _stg_params.SetMagicNo(_magic_no);
+    _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
-    Strategy *_strat = new Stg_Alligator(sparams, "Alligator");
+    Strategy *_strat = new Stg_Alligator(_stg_params, "Alligator");
+    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 
@@ -223,21 +218,21 @@ class Stg_Alligator : public Strategy {
         _result = _indi[PPREV].value[LINE_LIPS] + _trail * _direction;
         break;
       case 9: {
-        int _bar_count = (int)_level * (int)_indi.GetLipsPeriod();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
-                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+        int _bar_count1 = (int)_level * (int)_indi.GetLipsPeriod();
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count1))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count1));
         break;
       }
       case 10: {
-        int _bar_count = (int)_level * (int)_indi.GetTeethShift();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
-                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+        int _bar_count2 = (int)_level * (int)_indi.GetTeethShift();
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count2))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count2));
         break;
       }
       case 11: {
-        int _bar_count = (int)_level * (int)_indi.GetJawPeriod();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
-                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+        int _bar_count3 = (int)_level * (int)_indi.GetJawPeriod();
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count3))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count3));
         break;
       }
     }

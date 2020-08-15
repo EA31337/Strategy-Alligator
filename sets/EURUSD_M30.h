@@ -1,27 +1,27 @@
-//+------------------------------------------------------------------+
-//|                  EA31337 - multi-strategy advanced trading robot |
-//|                       Copyright 2016-2020, 31337 Investments Ltd |
-//|                                       https://github.com/EA31337 |
-//+------------------------------------------------------------------+
+/*
+ * @file
+ * Defines default strategy parameter values for the given timeframe.
+ */
+
+// Defines indicator's parameter values for the given pair symbol and timeframe.
+struct Indi_Alligator_Params_M30 : Indi_Alligator_Params {
+  Indi_Alligator_Params_M30() : Indi_Alligator_Params(indi_alli_defaults, PERIOD_M30) { shift = 0; }
+} indi_alli_m30;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_Alligator_EURUSD_M30_Params : Stg_Alligator_Params {
-  Stg_Alligator_EURUSD_M30_Params() {
-    Alligator_Period_Jaw = 16;
-    Alligator_Period_Teeth = 8;
-    Alligator_Period_Lips = 6;
-    Alligator_Shift_Jaw = 0;
-    Alligator_Shift_Teeth = 0;
-    Alligator_Shift_Lips = 0;
-    Alligator_MA_Method = 2;
-    Alligator_Applied_Price = 4;
-    Alligator_Shift = 2;
-    Alligator_SignalOpenMethod = 0;
-    Alligator_SignalOpenLevel = 0.1f;
-    Alligator_SignalCloseMethod = 0;
-    Alligator_SignalCloseLevel = 0.1f;
-    Alligator_PriceLimitMethod = 0;
-    Alligator_PriceLimitLevel = 10;
-    Alligator_MaxSpread = 5;
+struct Stg_Alligator_Params_M30 : StgParams {
+  // Struct constructor.
+  Stg_Alligator_Params_M30() : StgParams(stg_alli_defaults) {
+    lot_size = 0;
+    signal_open_method = 0;
+    signal_open_filter = 1;
+    signal_open_level = 0;
+    signal_open_boost = 0;
+    signal_close_method = 0;
+    signal_close_level = 0;
+    price_limit_method = 0;
+    price_limit_level = 2;
+    tick_filter_method = 1;
+    max_spread = 0;
   }
 } stg_alli_m30;
