@@ -15,8 +15,8 @@ INPUT int Alligator_SignalOpenFilterMethod = 36;  // Signal open filter method
 INPUT int Alligator_SignalOpenBoostMethod = 36;   // Signal open filter method
 INPUT int Alligator_SignalCloseMethod = 0;        // Signal close method (-63-63)
 INPUT float Alligator_SignalCloseLevel = 36;      // Signal close level (-49-49)
-INPUT int Alligator_PriceLimitMethod = 0;         // Price limit method
-INPUT float Alligator_PriceLimitLevel = 10;       // Price limit level
+INPUT int Alligator_PriceStopMethod = 0;          // Price stop method
+INPUT float Alligator_PriceStopLevel = 10;        // Price stop level
 INPUT int Alligator_TickFilterMethod = 0;         // Tick filter method
 INPUT float Alligator_MaxSpread = 0;              // Max spread to trade (pips)
 INPUT int Alligator_Shift = 2;                    // Shift
@@ -52,7 +52,7 @@ struct Stg_Alligator_Params_Defaults : StgParams {
   Stg_Alligator_Params_Defaults()
       : StgParams(::Alligator_SignalOpenMethod, ::Alligator_SignalOpenFilterMethod, ::Alligator_SignalOpenLevel,
                   ::Alligator_SignalOpenBoostMethod, ::Alligator_SignalCloseMethod, ::Alligator_SignalCloseLevel,
-                  ::Alligator_PriceLimitMethod, ::Alligator_PriceLimitLevel, ::Alligator_TickFilterMethod,
+                  ::Alligator_PriceStopMethod, ::Alligator_PriceStopLevel, ::Alligator_TickFilterMethod,
                   ::Alligator_MaxSpread, ::Alligator_Shift) {}
 } stg_alli_defaults;
 
@@ -180,9 +180,9 @@ class Stg_Alligator : public Strategy {
   }
 
   /**
-   * Gets price limit value for profit take or stop loss.
+   * Gets price stop value for profit take or stop loss.
    */
-  float PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
+  float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
     Indi_Alligator *_indi = Data();
     bool _is_valid = _indi[CURR].IsValid();
     double _trail = _level * Market().GetPipSize();
