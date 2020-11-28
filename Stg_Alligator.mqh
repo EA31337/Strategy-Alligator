@@ -190,46 +190,46 @@ class Stg_Alligator : public Strategy {
     double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
     double _result = _default_value;
     switch (_method) {
-      case 0:
+      case 1:
         _result = _indi[CURR].value[LINE_JAW] + _trail * _direction;
         break;
-      case 1:
+      case 2:
         _result = _indi[CURR].value[LINE_TEETH] + _trail * _direction;
         break;
-      case 2:
+      case 3:
         _result = _indi[CURR].value[LINE_LIPS] + _trail * _direction;
         break;
-      case 3:
+      case 4:
         _result = _indi[PREV].value[LINE_JAW] + _trail * _direction;
         break;
-      case 4:
+      case 5:
         _result = _indi[PREV].value[LINE_TEETH] + _trail * _direction;
         break;
-      case 5:
+      case 6:
         _result = _indi[PREV].value[LINE_LIPS] + _trail * _direction;
         break;
-      case 6:
+      case 7:
         _result = _indi[PPREV].value[LINE_JAW] + _trail * _direction;
         break;
-      case 7:
+      case 8:
         _result = _indi[PPREV].value[LINE_TEETH] + _trail * _direction;
         break;
-      case 8:
+      case 9:
         _result = _indi[PPREV].value[LINE_LIPS] + _trail * _direction;
         break;
-      case 9: {
+      case 10: {
         int _bar_count1 = (int)_level * (int)_indi.GetLipsPeriod();
         _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count1))
                                  : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count1));
         break;
       }
-      case 10: {
+      case 11: {
         int _bar_count2 = (int)_level * (int)_indi.GetTeethShift();
         _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count2))
                                  : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count2));
         break;
       }
-      case 11: {
+      case 12: {
         int _bar_count3 = (int)_level * (int)_indi.GetJawPeriod();
         _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count3))
                                  : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count3));
