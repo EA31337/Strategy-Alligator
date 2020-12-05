@@ -116,62 +116,57 @@ class Stg_Alligator : public Strategy {
     switch (_cmd) {
       case ORDER_TYPE_BUY:
         _result =
-            (_indi[CURR].value[LINE_LIPS] >
-                 _indi[CURR].value[LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
-             _indi[CURR].value[LINE_TEETH] > _indi[CURR].value[LINE_JAW] + _level_pips  // ... Teeth are above Jaw ...
+            (_indi[CURR][LINE_LIPS] > _indi[CURR][LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
+             _indi[CURR][LINE_TEETH] > _indi[CURR][LINE_JAW] + _level_pips      // ... Teeth are above Jaw ...
             );
         if (_method != 0) {
           if (METHOD(_method, 0))
-            _result &= (_indi[CURR].value[LINE_LIPS] > _indi[PREV].value[LINE_LIPS] &&    // Check if Lips increased.
-                        _indi[CURR].value[LINE_TEETH] > _indi[PREV].value[LINE_TEETH] &&  // Check if Teeth increased.
-                        _indi[CURR].value[LINE_JAW] > _indi[PREV].value[LINE_JAW]         // // Check if Jaw increased.
+            _result &= (_indi[CURR][LINE_LIPS] > _indi[PREV][LINE_LIPS] &&    // Check if Lips increased.
+                        _indi[CURR][LINE_TEETH] > _indi[PREV][LINE_TEETH] &&  // Check if Teeth increased.
+                        _indi[CURR][LINE_JAW] > _indi[PREV][LINE_JAW]         // // Check if Jaw increased.
             );
           if (METHOD(_method, 1))
-            _result &= (_indi[PREV].value[LINE_LIPS] > _indi[PPREV].value[LINE_LIPS] &&    // Check if Lips increased.
-                        _indi[PREV].value[LINE_TEETH] > _indi[PPREV].value[LINE_TEETH] &&  // Check if Teeth increased.
-                        _indi[PREV].value[LINE_JAW] > _indi[PPREV].value[LINE_JAW]         // // Check if Jaw increased.
+            _result &= (_indi[PREV][LINE_LIPS] > _indi[PPREV][LINE_LIPS] &&    // Check if Lips increased.
+                        _indi[PREV][LINE_TEETH] > _indi[PPREV][LINE_TEETH] &&  // Check if Teeth increased.
+                        _indi[PREV][LINE_JAW] > _indi[PPREV][LINE_JAW]         // // Check if Jaw increased.
             );
           if (METHOD(_method, 2))
-            _result &= _indi[CURR].value[LINE_LIPS] > _indi[PPREV].value[LINE_LIPS];  // Check if Lips increased.
+            _result &= _indi[CURR][LINE_LIPS] > _indi[PPREV][LINE_LIPS];  // Check if Lips increased.
           if (METHOD(_method, 3))
-            _result &= _indi[CURR].value[LINE_LIPS] - _indi[CURR].value[LINE_TEETH] >
-                       _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_JAW];
-          if (METHOD(_method, 4))
             _result &=
-                (_indi[PPREV].value[LINE_LIPS] <=
-                     _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are below Teeth and ...
-                 _indi[PPREV].value[LINE_LIPS] <= _indi[PPREV].value[LINE_JAW] ||  // ... Lips are below Jaw and ...
-                 _indi[PPREV].value[LINE_TEETH] <= _indi[PPREV].value[LINE_JAW]    // ... Teeth are below Jaw ...
-                );
+                _indi[CURR][LINE_LIPS] - _indi[CURR][LINE_TEETH] > _indi[CURR][LINE_TEETH] - _indi[CURR][LINE_JAW];
+          if (METHOD(_method, 4))
+            _result &= (_indi[PPREV][LINE_LIPS] <= _indi[PPREV][LINE_TEETH] ||  // Check if Lips are below Teeth and ...
+                        _indi[PPREV][LINE_LIPS] <= _indi[PPREV][LINE_JAW] ||    // ... Lips are below Jaw and ...
+                        _indi[PPREV][LINE_TEETH] <= _indi[PPREV][LINE_JAW]      // ... Teeth are below Jaw ...
+            );
         }
         break;
       case ORDER_TYPE_SELL:
         _result =
-            (_indi[CURR].value[LINE_LIPS] + _level_pips <
-                 _indi[CURR].value[LINE_TEETH] &&  // Check if Lips are below Teeth and ...
-             _indi[CURR].value[LINE_TEETH] + _level_pips < _indi[CURR].value[LINE_JAW]  // ... Teeth are below Jaw ...
+            (_indi[CURR][LINE_LIPS] + _level_pips < _indi[CURR][LINE_TEETH] &&  // Check if Lips are below Teeth and ...
+             _indi[CURR][LINE_TEETH] + _level_pips < _indi[CURR][LINE_JAW]      // ... Teeth are below Jaw ...
             );
         if (_method != 0) {
           if (METHOD(_method, 0))
-            _result &= (_indi[CURR].value[LINE_LIPS] < _indi[PREV].value[LINE_LIPS] &&    // Check if Lips decreased.
-                        _indi[CURR].value[LINE_TEETH] < _indi[PREV].value[LINE_TEETH] &&  // Check if Teeth decreased.
-                        _indi[CURR].value[LINE_JAW] < _indi[PREV].value[LINE_JAW]         // // Check if Jaw decreased.
+            _result &= (_indi[CURR][LINE_LIPS] < _indi[PREV][LINE_LIPS] &&    // Check if Lips decreased.
+                        _indi[CURR][LINE_TEETH] < _indi[PREV][LINE_TEETH] &&  // Check if Teeth decreased.
+                        _indi[CURR][LINE_JAW] < _indi[PREV][LINE_JAW]         // // Check if Jaw decreased.
             );
           if (METHOD(_method, 1))
-            _result &= (_indi[PREV].value[LINE_LIPS] < _indi[PPREV].value[LINE_LIPS] &&    // Check if Lips decreased.
-                        _indi[PREV].value[LINE_TEETH] < _indi[PPREV].value[LINE_TEETH] &&  // Check if Teeth decreased.
-                        _indi[PREV].value[LINE_JAW] < _indi[PPREV].value[LINE_JAW]         // // Check if Jaw decreased.
+            _result &= (_indi[PREV][LINE_LIPS] < _indi[PPREV][LINE_LIPS] &&    // Check if Lips decreased.
+                        _indi[PREV][LINE_TEETH] < _indi[PPREV][LINE_TEETH] &&  // Check if Teeth decreased.
+                        _indi[PREV][LINE_JAW] < _indi[PPREV][LINE_JAW]         // // Check if Jaw decreased.
             );
           if (METHOD(_method, 2))
-            _result &= _indi[CURR].value[LINE_LIPS] < _indi[PPREV].value[LINE_LIPS];  // Check if Lips decreased.
+            _result &= _indi[CURR][LINE_LIPS] < _indi[PPREV][LINE_LIPS];  // Check if Lips decreased.
           if (METHOD(_method, 3))
-            _result &= _indi[CURR].value[LINE_TEETH] - _indi[CURR].value[LINE_LIPS] >
-                       _indi[CURR].value[LINE_JAW] - _indi[CURR].value[LINE_TEETH];
+            _result &=
+                _indi[CURR][LINE_TEETH] - _indi[CURR][LINE_LIPS] > _indi[CURR][LINE_JAW] - _indi[CURR][LINE_TEETH];
           if (METHOD(_method, 4))
-            _result &= (_indi[PPREV].value[LINE_LIPS] >=
-                            _indi[PPREV].value[LINE_TEETH] ||  // Check if Lips are above Teeth ...
-                        _indi[PPREV].value[LINE_LIPS] >= _indi[PPREV].value[LINE_JAW] ||  // ... Lips are above Jaw ...
-                        _indi[PPREV].value[LINE_TEETH] >= _indi[PPREV].value[LINE_JAW]    // ... Teeth are above Jaw ...
+            _result &= (_indi[PPREV][LINE_LIPS] >= _indi[PPREV][LINE_TEETH] ||  // Check if Lips are above Teeth ...
+                        _indi[PPREV][LINE_LIPS] >= _indi[PPREV][LINE_JAW] ||    // ... Lips are above Jaw ...
+                        _indi[PPREV][LINE_TEETH] >= _indi[PPREV][LINE_JAW]      // ... Teeth are above Jaw ...
             );
         }
         break;
@@ -191,31 +186,31 @@ class Stg_Alligator : public Strategy {
     double _result = _default_value;
     switch (_method) {
       case 1:
-        _result = _indi[CURR].value[LINE_JAW] + _trail * _direction;
+        _result = _indi[CURR][LINE_JAW] + _trail * _direction;
         break;
       case 2:
-        _result = _indi[CURR].value[LINE_TEETH] + _trail * _direction;
+        _result = _indi[CURR][LINE_TEETH] + _trail * _direction;
         break;
       case 3:
-        _result = _indi[CURR].value[LINE_LIPS] + _trail * _direction;
+        _result = _indi[CURR][LINE_LIPS] + _trail * _direction;
         break;
       case 4:
-        _result = _indi[PREV].value[LINE_JAW] + _trail * _direction;
+        _result = _indi[PREV][LINE_JAW] + _trail * _direction;
         break;
       case 5:
-        _result = _indi[PREV].value[LINE_TEETH] + _trail * _direction;
+        _result = _indi[PREV][LINE_TEETH] + _trail * _direction;
         break;
       case 6:
-        _result = _indi[PREV].value[LINE_LIPS] + _trail * _direction;
+        _result = _indi[PREV][LINE_LIPS] + _trail * _direction;
         break;
       case 7:
-        _result = _indi[PPREV].value[LINE_JAW] + _trail * _direction;
+        _result = _indi[PPREV][LINE_JAW] + _trail * _direction;
         break;
       case 8:
-        _result = _indi[PPREV].value[LINE_TEETH] + _trail * _direction;
+        _result = _indi[PPREV][LINE_TEETH] + _trail * _direction;
         break;
       case 9:
-        _result = _indi[PPREV].value[LINE_LIPS] + _trail * _direction;
+        _result = _indi[PPREV][LINE_LIPS] + _trail * _direction;
         break;
       case 10: {
         int _bar_count1 = (int)_level * (int)_indi.GetLipsPeriod();
