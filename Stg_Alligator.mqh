@@ -214,20 +214,20 @@ class Stg_Alligator : public Strategy {
         break;
       case 10: {
         int _bar_count1 = (int)_level * (int)_indi.GetLipsPeriod();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count1))
-                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count1));
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest<double>(_bar_count1))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest<double>(_bar_count1));
         break;
       }
       case 11: {
         int _bar_count2 = (int)_level * (int)_indi.GetTeethShift();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count2))
-                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count2));
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest<double>(_bar_count2))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest<double>(_bar_count2));
         break;
       }
       case 12: {
         int _bar_count3 = (int)_level * (int)_indi.GetJawPeriod();
-        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count3))
-                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count3));
+        _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest<double>(_bar_count3))
+                                 : _indi.GetPrice(PRICE_LOW, _indi.GetLowest<double>(_bar_count3));
         break;
       }
     }
