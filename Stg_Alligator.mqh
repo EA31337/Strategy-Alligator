@@ -3,10 +3,6 @@
  * Implements Alligator strategy based on the Alligator indicator.
  */
 
-// Includes.
-#include <EA31337-classes/Indicators/Indi_Alligator.mqh>
-#include <EA31337-classes/Strategy.mqh>
-
 // User input params.
 INPUT float Alligator_LotSize = 0;                // Lot size
 INPUT int Alligator_SignalOpenMethod = 0;         // Signal open method (-63-63)
