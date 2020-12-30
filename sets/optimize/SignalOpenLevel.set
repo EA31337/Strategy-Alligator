@@ -1,0 +1,7 @@
+; Optimize signal open level param.
+Alligator_SignalOpenFilterMethod=1
+Alligator_SignalOpenLevel,1=0
+Alligator_SignalOpenLevel,2=1
+Alligator_SignalOpenLevel,3=10
+Alligator_SignalOpenLevel,F=1
+Alligator_TickFilterMethod=1

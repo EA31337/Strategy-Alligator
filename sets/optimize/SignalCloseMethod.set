@@ -1,0 +1,7 @@
+; Optimize signal close method param.
+Alligator_SignalCloseMethod,1=-4
+Alligator_SignalCloseMethod,2=1
+Alligator_SignalCloseMethod,3=4
+Alligator_SignalCloseMethod,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1

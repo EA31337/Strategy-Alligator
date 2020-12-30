@@ -1,0 +1,7 @@
+; Optimize signal open method param.
+Alligator_SignalOpenFilterMethod=1
+Alligator_SignalOpenMethod,1=-4
+Alligator_SignalOpenMethod,2=1
+Alligator_SignalOpenMethod,3=4
+Alligator_SignalOpenMethod,F=1
+Alligator_TickFilterMethod=1

@@ -1,0 +1,6 @@
+; Optimize tick filter method param.
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod,1=1
+Alligator_TickFilterMethod,2=1
+Alligator_TickFilterMethod,3=32
+Alligator_TickFilterMethod,F=1

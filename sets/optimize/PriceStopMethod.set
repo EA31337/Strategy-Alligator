@@ -1,0 +1,8 @@
+; Optimize price stop method param.
+Alligator_PriceStopMethod,1=0
+Alligator_PriceStopMethod,2=1
+Alligator_PriceStopMethod,3=4
+Alligator_PriceStopMethod,F=1
+Alligator_OrderCloseTime=-20
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1

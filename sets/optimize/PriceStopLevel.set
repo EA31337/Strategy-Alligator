@@ -1,0 +1,7 @@
+; Optimize price stop level param.
+Alligator_PriceStopLevel,1=10
+Alligator_PriceStopLevel,2=5
+Alligator_PriceStopLevel,3=40
+Alligator_PriceStopLevel,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1

@@ -1,0 +1,7 @@
+; Optimize signal close level param.
+Alligator_SignalCloseLevel,1=10
+Alligator_SignalCloseLevel,2=5
+Alligator_SignalCloseLevel,3=40
+Alligator_SignalCloseLevel,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1
