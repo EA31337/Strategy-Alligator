@@ -16,6 +16,7 @@ INPUT float Alligator_PriceStopLevel = 10;        // Price stop level
 INPUT int Alligator_TickFilterMethod = 0;         // Tick filter method
 INPUT float Alligator_MaxSpread = 0;              // Max spread to trade (pips)
 INPUT int Alligator_Shift = 2;                    // Shift
+INPUT int Alligator_OrderCloseTime = -10;         // Order close time in mins (>0) or bars (<0)
 INPUT string __Alligator_Indi_Alligator_Parameters__ =
     "-- Alligator strategy: Alligator indicator params --";  // >>> Alligator strategy: Alligator indicator <<<
 INPUT int Indi_Alligator_Period_Jaw = 16;                    // Jaw Period
@@ -49,7 +50,7 @@ struct Stg_Alligator_Params_Defaults : StgParams {
       : StgParams(::Alligator_SignalOpenMethod, ::Alligator_SignalOpenFilterMethod, ::Alligator_SignalOpenLevel,
                   ::Alligator_SignalOpenBoostMethod, ::Alligator_SignalCloseMethod, ::Alligator_SignalCloseLevel,
                   ::Alligator_PriceStopMethod, ::Alligator_PriceStopLevel, ::Alligator_TickFilterMethod,
-                  ::Alligator_MaxSpread, ::Alligator_Shift) {}
+                  ::Alligator_MaxSpread, ::Alligator_Shift, ::Alligator_OrderCloseTime) {}
 } stg_alli_defaults;
 
 // Struct to define strategy parameters to override.
