@@ -1,0 +1,7 @@
+; Optimize strategy indicator's Alligator params.
+Alligator_Indi_Alligator_MA_Method,1=0
+Alligator_Indi_Alligator_MA_Method,2=1
+Alligator_Indi_Alligator_MA_Method,3=3
+Alligator_Indi_Alligator_MA_Method,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1

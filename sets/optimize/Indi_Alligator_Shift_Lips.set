@@ -1,0 +1,7 @@
+; Optimize strategy indicator's Alligator params.
+Alligator_Indi_Alligator_Shift_Lips,1=0
+Alligator_Indi_Alligator_Shift_Lips,2=1
+Alligator_Indi_Alligator_Shift_Lips,3=6
+Alligator_Indi_Alligator_Shift_Lips,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1
