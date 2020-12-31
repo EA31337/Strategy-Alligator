@@ -5,7 +5,15 @@
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
 struct Indi_Alligator_Params_H1 : Indi_Alligator_Params {
-  Indi_Alligator_Params_H1() : Indi_Alligator_Params(indi_alli_defaults, PERIOD_H1) { shift = 0; }
+  Indi_Alligator_Params_H1() : Indi_Alligator_Params(indi_alli_defaults, PERIOD_H1) {
+    jaw_period = 30;
+    jaw_shift = 0;
+    teeth_period = 11;
+    teeth_shift = 0;
+    lips_period = 34;
+    lips_shift = 0;
+    shift = 0;
+  }
 } indi_alli_h1;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
