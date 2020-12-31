@@ -18,24 +18,25 @@ INPUT float Alligator_MaxSpread = 0;              // Max spread to trade (pips)
 INPUT int Alligator_Shift = 2;                    // Shift
 INPUT int Alligator_OrderCloseTime = -10;         // Order close time in mins (>0) or bars (<0)
 INPUT string __Alligator_Indi_Alligator_Parameters__ =
-    "-- Alligator strategy: Alligator indicator params --";  // >>> Alligator strategy: Alligator indicator <<<
-INPUT int Indi_Alligator_Period_Jaw = 16;                    // Jaw Period
-INPUT int Indi_Alligator_Period_Teeth = 8;                   // Teeth Period
-INPUT int Indi_Alligator_Period_Lips = 6;                    // Lips Period
-INPUT int Indi_Alligator_Shift_Jaw = 5;                      // Jaw Shift
-INPUT int Indi_Alligator_Shift_Teeth = 7;                    // Teeth Shift
-INPUT int Indi_Alligator_Shift_Lips = 5;                     // Lips Shift
-INPUT ENUM_MA_METHOD Indi_Alligator_MA_Method = 2;           // MA Method
-INPUT ENUM_APPLIED_PRICE Indi_Alligator_Applied_Price = 4;   // Applied Price
+    "-- Alligator strategy: Alligator indicator params --";           // >>> Alligator strategy: Alligator indicator <<<
+INPUT int Alligator_Indi_Alligator_Period_Jaw = 16;                   // Jaw Period
+INPUT int Alligator_Indi_Alligator_Period_Teeth = 8;                  // Teeth Period
+INPUT int Alligator_Indi_Alligator_Period_Lips = 6;                   // Lips Period
+INPUT int Alligator_Indi_Alligator_Shift_Jaw = 5;                     // Jaw Shift
+INPUT int Alligator_Indi_Alligator_Shift_Teeth = 7;                   // Teeth Shift
+INPUT int Alligator_Indi_Alligator_Shift_Lips = 5;                    // Lips Shift
+INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = 2;          // MA Method
+INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = 4;  // Applied Price
 
 // Structs.
 
 // Defines struct with default user indicator values.
 struct Indi_Alligator_Params_Defaults : AlligatorParams {
   Indi_Alligator_Params_Defaults()
-      : AlligatorParams(::Indi_Alligator_Period_Jaw, ::Indi_Alligator_Shift_Jaw, ::Indi_Alligator_Period_Teeth,
-                        ::Indi_Alligator_Shift_Teeth, ::Indi_Alligator_Period_Lips, ::Indi_Alligator_Shift_Lips,
-                        ::Indi_Alligator_MA_Method, ::Indi_Alligator_Applied_Price) {}
+      : AlligatorParams(::Alligator_Indi_Alligator_Period_Jaw, ::Alligator_Indi_Alligator_Shift_Jaw,
+                        ::Alligator_Indi_Alligator_Period_Teeth, ::Alligator_Indi_Alligator_Shift_Teeth,
+                        ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
+                        ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price) {}
 } indi_alli_defaults;
 
 // Defines struct to store indicator parameter values.
