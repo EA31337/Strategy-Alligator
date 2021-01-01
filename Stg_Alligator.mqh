@@ -4,19 +4,19 @@
  */
 
 // User input params.
-INPUT float Alligator_LotSize = 0;                // Lot size
-INPUT int Alligator_SignalOpenMethod = 0;         // Signal open method (-63-63)
-INPUT float Alligator_SignalOpenLevel = 36;       // Signal open level (-49-49)
-INPUT int Alligator_SignalOpenFilterMethod = 36;  // Signal open filter method
-INPUT int Alligator_SignalOpenBoostMethod = 36;   // Signal open filter method
-INPUT int Alligator_SignalCloseMethod = 0;        // Signal close method (-63-63)
-INPUT float Alligator_SignalCloseLevel = 36;      // Signal close level (-49-49)
-INPUT int Alligator_PriceStopMethod = 0;          // Price stop method
-INPUT float Alligator_PriceStopLevel = 10;        // Price stop level
-INPUT int Alligator_TickFilterMethod = 0;         // Tick filter method
-INPUT float Alligator_MaxSpread = 0;              // Max spread to trade (pips)
-INPUT int Alligator_Shift = 2;                    // Shift
-INPUT int Alligator_OrderCloseTime = -10;         // Order close time in mins (>0) or bars (<0)
+INPUT float Alligator_LotSize = 0;               // Lot size
+INPUT int Alligator_SignalOpenMethod = 0;        // Signal open method (-63-63)
+INPUT float Alligator_SignalOpenLevel = 0.0f;    // Signal open level (-49-49)
+INPUT int Alligator_SignalOpenFilterMethod = 1;  // Signal open filter method
+INPUT int Alligator_SignalOpenBoostMethod = 36;  // Signal open filter method
+INPUT int Alligator_SignalCloseMethod = 0;       // Signal close method (-63-63)
+INPUT float Alligator_SignalCloseLevel = 0.0f;   // Signal close level (-49-49)
+INPUT int Alligator_PriceStopMethod = 0;         // Price stop method
+INPUT float Alligator_PriceStopLevel = 10;       // Price stop level
+INPUT int Alligator_TickFilterMethod = 1;        // Tick filter method
+INPUT float Alligator_MaxSpread = 4.0;           // Max spread to trade (pips)
+INPUT int Alligator_Shift = 2;                   // Shift
+INPUT int Alligator_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
 INPUT string __Alligator_Indi_Alligator_Parameters__ =
     "-- Alligator strategy: Alligator indicator params --";           // >>> Alligator strategy: Alligator indicator <<<
 INPUT int Alligator_Indi_Alligator_Period_Jaw = 16;                   // Jaw Period
