@@ -8,8 +8,13 @@ struct Indi_Alligator_Params_{{ Timeframe }} : Indi_Alligator_Params {
   Indi_Alligator_Params_{{ Timeframe }}() : Indi_Alligator_Params(indi_alli_defaults, PERIOD_{{ Timeframe }}) {
     applied_price = (ENUM_APPLIED_PRICE){{ Alligator_Indi_Alligator_Applied_Price | default(0) }};
     ma_method = {{ Alligator_Indi_Alligator_MA_Method | default(0) }};
-    period = {{ Alligator_Indi_Alligator_Period | default(0) }};
+    period_jaw = {{ Alligator_Indi_Alligator_Period_Jaw | default(0) }};
+    period_lips = {{ Alligator_Indi_Alligator_Period_Lips | default(0) }};
+    period_teeth = {{ Alligator_Indi_Alligator_Period_Teeth | default(0) }};
     shift = {{ Alligator_Shift | default(0) }};
+    shift_jaw = {{ Alligator_Indi_Alligator_Shift_Jaw | default(0) }};
+    shift_lips = {{ Alligator_Indi_Alligator_Shift_Lips | default(0) }};
+    shift_teeth = {{ Alligator_Indi_Alligator_Shift_Teeth | default(0) }};
   }
 } indi_alli_{{ Timeframe | lower }};
 
