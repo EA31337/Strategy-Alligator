@@ -1,0 +1,7 @@
+; Optimize strategy indicator's Alligator period param.
+Alligator_Indi_Alligator_Period_Lips,1=4
+Alligator_Indi_Alligator_Period_Lips,2=4
+Alligator_Indi_Alligator_Period_Lips,3=24
+Alligator_Indi_Alligator_Period_Lips,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1

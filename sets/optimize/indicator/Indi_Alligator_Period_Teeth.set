@@ -1,7 +1,7 @@
-; Optimize strategy indicator's Alligator params.
+; Optimize strategy indicator's Alligator period param.
 Alligator_Indi_Alligator_Period_Teeth,1=4
-Alligator_Indi_Alligator_Period_Teeth,2=2
-Alligator_Indi_Alligator_Period_Teeth,3=20
+Alligator_Indi_Alligator_Period_Teeth,2=4
+Alligator_Indi_Alligator_Period_Teeth,3=24
 Alligator_Indi_Alligator_Period_Teeth,F=1
 Alligator_SignalOpenFilterMethod=1
 Alligator_TickFilterMethod=1
