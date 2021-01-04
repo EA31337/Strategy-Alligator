@@ -25,10 +25,10 @@ struct Stg_Alligator_Params_{{ Timeframe }} : StgParams {
     lot_size = {{ Alligator_LotSize | default(0) }};
     signal_open_method = {{ Alligator_SignalOpenMethod | default(0) }};
     signal_open_filter = {{ Alligator_SignalOpenFilterMethod | default(1) }};
-    signal_open_level = {{ Alligator_SignalOpenLevel | default(0) }};
+    signal_open_level = (float){{ Alligator_SignalOpenLevel | default(0) }};
     signal_open_boost = {{ Alligator_SignalOpenBoostMethod | default(0) }};
     signal_close_method = {{ Alligator_SignalCloseMethod | default(0) }};
-    signal_close_level = {{ Alligator_SignalCloseLevel | default(0) }};
+    signal_close_level = (float){{ Alligator_SignalCloseLevel | default(0) }};
     price_stop_method = {{ Alligator_PriceStopMethod | default(0) }};
     price_stop_level = {{ Alligator_SignalCloseLevel | default(1) }};
     tick_filter_method = {{ Alligator_TickFilterMethod  | default(1) }};
