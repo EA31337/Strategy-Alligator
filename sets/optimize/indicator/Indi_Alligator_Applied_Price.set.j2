@@ -13,5 +13,5 @@ Alligator_Indi_Alligator_Shift_Teeth={{ shift_teeth | default(0) }}
 Alligator_LotSize={{ lot_size | default(0) }}
 Alligator_PriceStopMethod=0
 Alligator_SignalOpenFilterMethod=1
-Alligator_SignalOpenLevel={{ signal_open_level | default(0) }}
+Alligator_SignalOpenLevel={{ signal_open_level | replace("(float)", "") | float | default(0) }}
 Alligator_TickFilterMethod=1
