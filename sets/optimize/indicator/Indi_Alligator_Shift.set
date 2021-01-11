@@ -1,0 +1,7 @@
+; Optimize indicator's shift param.
+Alligator_Indi_Alligator_Shift,1=0
+Alligator_Indi_Alligator_Shift,2=1
+Alligator_Indi_Alligator_Shift,3=4
+Alligator_Indi_Alligator_Shift,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1
