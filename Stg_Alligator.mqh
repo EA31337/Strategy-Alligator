@@ -18,15 +18,15 @@ INPUT float Alligator_MaxSpread = 4.0;           // Max spread to trade (pips)
 INPUT int Alligator_Shift = 2;                   // Shift
 INPUT int Alligator_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
 INPUT string __Alligator_Indi_Alligator_Parameters__ =
-    "-- Alligator strategy: Alligator indicator params --";           // >>> Alligator strategy: Alligator indicator <<<
-INPUT int Alligator_Indi_Alligator_Period_Jaw = 16;                   // Jaw Period
-INPUT int Alligator_Indi_Alligator_Period_Teeth = 8;                  // Teeth Period
-INPUT int Alligator_Indi_Alligator_Period_Lips = 6;                   // Lips Period
-INPUT int Alligator_Indi_Alligator_Shift_Jaw = 5;                     // Jaw Shift
-INPUT int Alligator_Indi_Alligator_Shift_Teeth = 7;                   // Teeth Shift
-INPUT int Alligator_Indi_Alligator_Shift_Lips = 5;                    // Lips Shift
-INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = 2;          // MA Method
-INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = 4;  // Applied Price
+    "-- Alligator strategy: Alligator indicator params --";  // >>> Alligator strategy: Alligator indicator <<<
+INPUT int Alligator_Indi_Alligator_Period_Jaw = 16;          // Jaw Period
+INPUT int Alligator_Indi_Alligator_Period_Teeth = 8;         // Teeth Period
+INPUT int Alligator_Indi_Alligator_Period_Lips = 6;          // Lips Period
+INPUT int Alligator_Indi_Alligator_Shift_Jaw = 5;            // Jaw Shift
+INPUT int Alligator_Indi_Alligator_Shift_Teeth = 7;          // Teeth Shift
+INPUT int Alligator_Indi_Alligator_Shift_Lips = 5;           // Lips Shift
+INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = (ENUM_MA_METHOD)2;              // MA Method
+INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = (ENUM_APPLIED_PRICE)4;  // Applied Price
 
 // Structs.
 
