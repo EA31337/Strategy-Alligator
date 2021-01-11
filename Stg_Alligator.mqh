@@ -39,12 +39,6 @@ struct Indi_Alligator_Params_Defaults : AlligatorParams {
                         ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price) {}
 } indi_alli_defaults;
 
-// Defines struct to store indicator parameter values.
-struct Indi_Alligator_Params : public AlligatorParams {
-  // Struct constructors.
-  void Indi_Alligator_Params(AlligatorParams &_params, ENUM_TIMEFRAMES _tf) : AlligatorParams(_params, _tf) {}
-};
-
 // Defines struct with default user strategy values.
 struct Stg_Alligator_Params_Defaults : StgParams {
   Stg_Alligator_Params_Defaults()
@@ -56,11 +50,11 @@ struct Stg_Alligator_Params_Defaults : StgParams {
 
 // Struct to define strategy parameters to override.
 struct Stg_Alligator_Params : StgParams {
-  Indi_Alligator_Params iparams;
+  AlligatorParams iparams;
   StgParams sparams;
 
   // Struct constructors.
-  Stg_Alligator_Params(Indi_Alligator_Params &_iparams, StgParams &_sparams)
+  Stg_Alligator_Params(AlligatorParams &_iparams, StgParams &_sparams)
       : iparams(indi_alli_defaults, _iparams.tf), sparams(stg_alli_defaults) {
     iparams = _iparams;
     sparams = _sparams;
@@ -82,11 +76,11 @@ class Stg_Alligator : public Strategy {
 
   static Stg_Alligator *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
-    Indi_Alligator_Params _indi_params(indi_alli_defaults, _tf);
+    AlligatorParams _indi_params(indi_alli_defaults, _tf);
     StgParams _stg_params(stg_alli_defaults);
     if (!Terminal::IsOptimization()) {
-      SetParamsByTf<Indi_Alligator_Params>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
-                                           indi_alli_h1, indi_alli_h4, indi_alli_h8);
+      SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
+                                     indi_alli_h1, indi_alli_h4, indi_alli_h8);
       SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
                                stg_alli_h4, stg_alli_h8);
     }
