@@ -1,0 +1,15 @@
+; Optimize strategy indicator's Alligator shift params.
+Alligator_Indi_Alligator_Shift_Jaw,1=0
+Alligator_Indi_Alligator_Shift_Jaw,2=1
+Alligator_Indi_Alligator_Shift_Jaw,3=4
+Alligator_Indi_Alligator_Shift_Jaw,F=1
+Alligator_Indi_Alligator_Shift_Lips,1=0
+Alligator_Indi_Alligator_Shift_Lips,2=1
+Alligator_Indi_Alligator_Shift_Lips,3=4
+Alligator_Indi_Alligator_Shift_Lips,F=1
+Alligator_Indi_Alligator_Shift_Teeth,1=0
+Alligator_Indi_Alligator_Shift_Teeth,2=1
+Alligator_Indi_Alligator_Shift_Teeth,3=4
+Alligator_Indi_Alligator_Shift_Teeth,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1
