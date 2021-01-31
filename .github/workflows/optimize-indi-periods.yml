@@ -1,5 +1,5 @@
 ---
-name: Optimize Indicator params
+name: Optimize Indicator Period params
 
 # yamllint disable-line rule:truthy
 on:
