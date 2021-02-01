@@ -79,12 +79,12 @@ class Stg_Alligator : public Strategy {
     // Initialize strategy initial values.
     AlligatorParams _indi_params(indi_alli_defaults, _tf);
     StgParams _stg_params(stg_alli_defaults);
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
-                                     indi_alli_h1, indi_alli_h4, indi_alli_h8);
-      SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
-                               stg_alli_h4, stg_alli_h8);
-    }
+#ifdef __config__
+    SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
+                                   indi_alli_h1, indi_alli_h4, indi_alli_h8);
+    SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
+                             stg_alli_h4, stg_alli_h8);
+#endif
     // Initialize indicator.
     AlligatorParams alli_params(_indi_params);
     _stg_params.SetIndicator(new Indi_Alligator(_indi_params));
