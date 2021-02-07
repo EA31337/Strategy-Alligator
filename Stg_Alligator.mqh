@@ -4,27 +4,28 @@
  */
 
 // User input params.
-INPUT float Alligator_LotSize = 0;               // Lot size
-INPUT int Alligator_SignalOpenMethod = 0;        // Signal open method (-63-63)
-INPUT float Alligator_SignalOpenLevel = 0.0f;    // Signal open level (-49-49)
-INPUT int Alligator_SignalOpenFilterMethod = 1;  // Signal open filter method
-INPUT int Alligator_SignalOpenBoostMethod = 36;  // Signal open filter method
-INPUT int Alligator_SignalCloseMethod = 0;       // Signal close method (-63-63)
-INPUT float Alligator_SignalCloseLevel = 0.0f;   // Signal close level (-49-49)
-INPUT int Alligator_PriceStopMethod = 0;         // Price stop method
-INPUT float Alligator_PriceStopLevel = 10;       // Price stop level
-INPUT int Alligator_TickFilterMethod = 1;        // Tick filter method
-INPUT float Alligator_MaxSpread = 4.0;           // Max spread to trade (pips)
-INPUT int Alligator_Shift = 2;                   // Shift
-INPUT int Alligator_OrderCloseTime = -20;        // Order close time in mins (>0) or bars (<0)
+INPUT string __Alligator_Parameters__ = "-- Alligator strategy params --";  // >>> ALLIGATOR <<<
+INPUT float Alligator_LotSize = 0;                                          // Lot size
+INPUT int Alligator_SignalOpenMethod = 0;                                   // Signal open method (-63-63)
+INPUT float Alligator_SignalOpenLevel = 0.0f;                               // Signal open level (-49-49)
+INPUT int Alligator_SignalOpenFilterMethod = 1;                             // Signal open filter method
+INPUT int Alligator_SignalOpenBoostMethod = 0;                              // Signal open filter method
+INPUT int Alligator_SignalCloseMethod = 0;                                  // Signal close method (-63-63)
+INPUT float Alligator_SignalCloseLevel = 0.0f;                              // Signal close level (-49-49)
+INPUT int Alligator_PriceStopMethod = 0;                                    // Price stop method
+INPUT float Alligator_PriceStopLevel = 10;                                  // Price stop level
+INPUT int Alligator_TickFilterMethod = 1;                                   // Tick filter method
+INPUT float Alligator_MaxSpread = 4.0;                                      // Max spread to trade (pips)
+INPUT int Alligator_Shift = 2;                                              // Shift
+INPUT int Alligator_OrderCloseTime = -20;  // Order close time in mins (>0) or bars (<0)
 INPUT string __Alligator_Indi_Alligator_Parameters__ =
     "-- Alligator strategy: Alligator indicator params --";  // >>> Alligator strategy: Alligator indicator <<<
-INPUT int Alligator_Indi_Alligator_Period_Jaw = 16;          // Jaw Period
+INPUT int Alligator_Indi_Alligator_Period_Jaw = 21;          // Jaw Period
 INPUT int Alligator_Indi_Alligator_Period_Teeth = 8;         // Teeth Period
-INPUT int Alligator_Indi_Alligator_Period_Lips = 6;          // Lips Period
+INPUT int Alligator_Indi_Alligator_Period_Lips = 8;          // Lips Period
 INPUT int Alligator_Indi_Alligator_Shift_Jaw = 5;            // Jaw Shift
-INPUT int Alligator_Indi_Alligator_Shift_Teeth = 7;          // Teeth Shift
-INPUT int Alligator_Indi_Alligator_Shift_Lips = 5;           // Lips Shift
+INPUT int Alligator_Indi_Alligator_Shift_Teeth = 5;          // Teeth Shift
+INPUT int Alligator_Indi_Alligator_Shift_Lips = 3;           // Lips Shift
 INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = (ENUM_MA_METHOD)2;              // MA Method
 INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = (ENUM_APPLIED_PRICE)4;  // Applied Price
 
@@ -78,12 +79,12 @@ class Stg_Alligator : public Strategy {
     // Initialize strategy initial values.
     AlligatorParams _indi_params(indi_alli_defaults, _tf);
     StgParams _stg_params(stg_alli_defaults);
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
-                                     indi_alli_h1, indi_alli_h4, indi_alli_h8);
-      SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
-                               stg_alli_h4, stg_alli_h8);
-    }
+#ifdef __config__
+    SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
+                                   indi_alli_h1, indi_alli_h4, indi_alli_h8);
+    SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
+                             stg_alli_h4, stg_alli_h8);
+#endif
     // Initialize indicator.
     AlligatorParams alli_params(_indi_params);
     _stg_params.SetIndicator(new Indi_Alligator(_indi_params));
@@ -93,7 +94,6 @@ class Stg_Alligator : public Strategy {
     _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_Alligator(_stg_params, "Alligator");
-    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 

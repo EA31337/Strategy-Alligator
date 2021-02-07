@@ -1,0 +1,15 @@
+; Optimize strategy indicator's Alligator period params.
+Alligator_Indi_Alligator_Period_Jaw,1=4
+Alligator_Indi_Alligator_Period_Jaw,2=4
+Alligator_Indi_Alligator_Period_Jaw,3=24
+Alligator_Indi_Alligator_Period_Jaw,F=1
+Alligator_Indi_Alligator_Period_Lips,1=4
+Alligator_Indi_Alligator_Period_Lips,2=4
+Alligator_Indi_Alligator_Period_Lips,3=24
+Alligator_Indi_Alligator_Period_Lips,F=1
+Alligator_Indi_Alligator_Period_Teeth,1=4
+Alligator_Indi_Alligator_Period_Teeth,2=4
+Alligator_Indi_Alligator_Period_Teeth,3=24
+Alligator_Indi_Alligator_Period_Teeth,F=1
+Alligator_SignalOpenFilterMethod=1
+Alligator_TickFilterMethod=1
