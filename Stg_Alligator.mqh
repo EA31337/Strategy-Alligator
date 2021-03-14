@@ -28,6 +28,7 @@ INPUT int Alligator_Indi_Alligator_Shift_Teeth = 5;          // Teeth Shift
 INPUT int Alligator_Indi_Alligator_Shift_Lips = 3;           // Lips Shift
 INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = (ENUM_MA_METHOD)2;              // MA Method
 INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = (ENUM_APPLIED_PRICE)4;  // Applied Price
+INPUT int Alligator_Indi_Alligator_Shift = 0;                // Shift
 
 // Structs.
 
@@ -37,7 +38,8 @@ struct Indi_Alligator_Params_Defaults : AlligatorParams {
       : AlligatorParams(::Alligator_Indi_Alligator_Period_Jaw, ::Alligator_Indi_Alligator_Shift_Jaw,
                         ::Alligator_Indi_Alligator_Period_Teeth, ::Alligator_Indi_Alligator_Shift_Teeth,
                         ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
-                        ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price) {}
+                        ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price,
+                        ::Alligator_Indi_Alligator_Shift) {}
 } indi_alli_defaults;
 
 // Defines struct with default user strategy values.
