@@ -8,7 +8,7 @@ struct Indi_Alligator_Params_M1 : AlligatorParams {
   Indi_Alligator_Params_M1() : AlligatorParams(indi_alli_defaults, PERIOD_M1) {
     applied_price = (ENUM_APPLIED_PRICE)0;
     jaw_period = 17;
-    jaw_shift = 12;
+    jaw_shift = 10;
     lips_period = 9;
     lips_shift = 11;
     ma_method = (ENUM_MA_METHOD)2;
