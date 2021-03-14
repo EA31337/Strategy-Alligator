@@ -9,11 +9,11 @@ struct Indi_Alligator_Params_M15 : AlligatorParams {
     applied_price = (ENUM_APPLIED_PRICE)0;
     jaw_period = 25;
     jaw_shift = 6;
-    lips_period = 7;
+    lips_period = 9;
     lips_shift = 2;
     ma_method = (ENUM_MA_METHOD)2;
     shift = 0;
-    teeth_period = 10;
+    teeth_period = 8;
     teeth_shift = 5;
   }
 } indi_alli_m15;
