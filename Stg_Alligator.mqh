@@ -16,7 +16,7 @@ INPUT int Alligator_PriceStopMethod = 0;                                    // P
 INPUT float Alligator_PriceStopLevel = 10;                                  // Price stop level
 INPUT int Alligator_TickFilterMethod = 1;                                   // Tick filter method
 INPUT float Alligator_MaxSpread = 4.0;                                      // Max spread to trade (pips)
-INPUT int Alligator_Shift = 2;                                              // Shift
+INPUT short Alligator_Shift = 2;                                            // Shift
 INPUT int Alligator_OrderCloseTime = -20;  // Order close time in mins (>0) or bars (<0)
 INPUT string __Alligator_Indi_Alligator_Parameters__ =
     "-- Alligator strategy: Alligator indicator params --";  // >>> Alligator strategy: Alligator indicator <<<
@@ -28,7 +28,7 @@ INPUT int Alligator_Indi_Alligator_Shift_Teeth = 5;          // Teeth Shift
 INPUT int Alligator_Indi_Alligator_Shift_Lips = 3;           // Lips Shift
 INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = (ENUM_MA_METHOD)2;              // MA Method
 INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = (ENUM_APPLIED_PRICE)4;  // Applied Price
-INPUT int Alligator_Indi_Alligator_Shift = 0;                // Shift
+INPUT int Alligator_Indi_Alligator_Shift = 0;                                             // Shift
 
 // Structs.
 
