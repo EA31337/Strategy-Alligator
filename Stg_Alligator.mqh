@@ -103,7 +103,7 @@ class Stg_Alligator : public Strategy {
    * Check strategy's opening signal.
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
-    Indi_Alligator *_indi = Data();
+    Indi_Alligator *_indi = GetIndicator();
     bool _is_valid = _indi[CURR].IsValid();
     bool _result = _is_valid;
     double _level_pips = _level * Chart().GetPipSize();
@@ -177,7 +177,7 @@ class Stg_Alligator : public Strategy {
    * Gets price stop value for profit take or stop loss.
    */
   float PriceStop(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, float _level = 0.0) {
-    Indi_Alligator *_indi = Data();
+    Indi_Alligator *_indi = GetIndicator();
     bool _is_valid = _indi[CURR].IsValid();
     double _trail = _level * Market().GetPipSize();
     int _direction = Order::OrderDirection(_cmd, _mode);
