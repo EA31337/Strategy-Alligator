@@ -58,7 +58,7 @@ struct Stg_Alligator_Params : StgParams {
 
   // Struct constructors.
   Stg_Alligator_Params(AlligatorParams &_iparams, StgParams &_sparams)
-      : iparams(indi_alli_defaults, _iparams.tf), sparams(stg_alli_defaults) {
+      : iparams(indi_alli_defaults, _iparams.tf.GetTf()), sparams(stg_alli_defaults) {
     iparams = _iparams;
     sparams = _sparams;
   }
