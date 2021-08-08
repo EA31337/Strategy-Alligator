@@ -11,6 +11,7 @@ INPUT float Alligator_SignalOpenLevel = 0.0f;     // Signal open level (-49-49)
 INPUT int Alligator_SignalOpenFilterMethod = 32;  // Signal open filter method
 INPUT int Alligator_SignalOpenBoostMethod = 0;    // Signal open filter method
 INPUT int Alligator_SignalCloseMethod = 2;        // Signal close method (-127-127)
+INPUT int Alligator_SignalCloseFilter = 0;        // Signal close filter (-127-127)
 INPUT float Alligator_SignalCloseLevel = 0.0f;    // Signal close level (-49-49)
 INPUT int Alligator_PriceStopMethod = 1;          // Price stop method
 INPUT float Alligator_PriceStopLevel = 10;        // Price stop level
@@ -45,9 +46,9 @@ struct Indi_Alligator_Params_Defaults : AlligatorParams {
 struct Stg_Alligator_Params_Defaults : StgParams {
   Stg_Alligator_Params_Defaults()
       : StgParams(::Alligator_SignalOpenMethod, ::Alligator_SignalOpenFilterMethod, ::Alligator_SignalOpenLevel,
-                  ::Alligator_SignalOpenBoostMethod, ::Alligator_SignalCloseMethod, ::Alligator_SignalCloseLevel,
-                  ::Alligator_PriceStopMethod, ::Alligator_PriceStopLevel, ::Alligator_TickFilterMethod,
-                  ::Alligator_MaxSpread, ::Alligator_Shift, ::Alligator_OrderCloseTime) {}
+                  ::Alligator_SignalOpenBoostMethod, ::Alligator_SignalCloseMethod, ::Alligator_SignalCloseFilter,
+                  ::Alligator_SignalCloseLevel, ::Alligator_PriceStopMethod, ::Alligator_PriceStopLevel,
+                  ::Alligator_TickFilterMethod, ::Alligator_MaxSpread, ::Alligator_Shift, ::Alligator_OrderCloseTime) {}
 } stg_alli_defaults;
 
 // Struct to define strategy parameters to override.
