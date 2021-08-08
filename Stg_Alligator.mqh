@@ -8,7 +8,7 @@ INPUT string __Alligator_Parameters__ = "-- Alligator strategy params --";  // >
 INPUT float Alligator_LotSize = 0;                                          // Lot size
 INPUT int Alligator_SignalOpenMethod = 2;                                   // Signal open method (-127-127)
 INPUT float Alligator_SignalOpenLevel = 0.0f;                               // Signal open level (-49-49)
-INPUT int Alligator_SignalOpenFilterMethod = 32;                             // Signal open filter method
+INPUT int Alligator_SignalOpenFilterMethod = 32;                            // Signal open filter method
 INPUT int Alligator_SignalOpenBoostMethod = 0;                              // Signal open filter method
 INPUT int Alligator_SignalCloseMethod = 2;                                  // Signal close method (-127-127)
 INPUT float Alligator_SignalCloseLevel = 0.0f;                              // Signal close level (-49-49)
@@ -103,8 +103,11 @@ class Stg_Alligator : public Strategy {
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
     Indi_Alligator *_indi = GetIndicator();
-    bool _is_valid = _indi[CURR].IsValid();
-    bool _result = _is_valid;
+    bool _result = _indi.GetFlag(INDI_ENTRY_FLAG_IS_VALID);
+    if (!_result) {
+      // Returns false when indicator data is not valid.
+      return false;
+    }
     double _level_pips = _level * Chart().GetPipSize();
     switch (_cmd) {
       case ORDER_TYPE_BUY:
