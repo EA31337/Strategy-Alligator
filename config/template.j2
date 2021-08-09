@@ -24,7 +24,7 @@ struct Stg_Alligator_Params_{{ Timeframe }} : StgParams {
   Stg_Alligator_Params_{{ Timeframe }}() : StgParams(stg_alli_defaults) {
     lot_size = {{ Alligator_LotSize | default(0) }};
     signal_open_method = {{ Alligator_SignalOpenMethod | default(0) }};
-    signal_open_filter = {{ Alligator_SignalOpenFilterMethod | default(1) }};
+    signal_open_filter_method = {{ Alligator_SignalOpenFilterMethod | default(1) }};
     signal_open_level = (float){{ Alligator_SignalOpenLevel | default(0) }};
     signal_open_boost = {{ Alligator_SignalOpenBoostMethod | default(0) }};
     signal_close_method = {{ Alligator_SignalCloseMethod | default(0) }};
