@@ -21,7 +21,7 @@ INPUT float Alligator_MaxSpread = 4.0;            // Max spread to trade (pips)
 INPUT short Alligator_Shift = 2;                  // Shift
 INPUT float Alligator_OrderCloseLoss = 0;         // Order close loss
 INPUT float Alligator_OrderCloseProfit = 0;       // Order close profit
-INPUT int Alligator_OrderCloseTime = -20;         // Order close time in mins (>0) or bars (<0)
+INPUT int Alligator_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("Alligator strategy: Alligator indicator params");
 INPUT int Alligator_Indi_Alligator_Period_Jaw = 30;                               // Jaw Period
 INPUT int Alligator_Indi_Alligator_Period_Teeth = 8;                              // Teeth Period
