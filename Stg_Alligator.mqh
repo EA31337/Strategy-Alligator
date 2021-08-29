@@ -52,6 +52,7 @@ struct Stg_Alligator_Params_Defaults : StgParams {
                   ::Alligator_SignalOpenBoostMethod, ::Alligator_SignalCloseMethod, ::Alligator_SignalCloseFilter,
                   ::Alligator_SignalCloseLevel, ::Alligator_PriceStopMethod, ::Alligator_PriceStopLevel,
                   ::Alligator_TickFilterMethod, ::Alligator_MaxSpread, ::Alligator_Shift) {
+    Set(STRAT_PARAM_LS, Alligator_LotSize);
     Set(STRAT_PARAM_OCL, Alligator_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, Alligator_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, Alligator_OrderCloseTime);
