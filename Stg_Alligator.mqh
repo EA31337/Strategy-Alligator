@@ -60,19 +60,6 @@ struct Stg_Alligator_Params_Defaults : StgParams {
   }
 } stg_alli_defaults;
 
-// Struct to define strategy parameters to override.
-struct Stg_Alligator_Params : StgParams {
-  AlligatorParams iparams;
-  StgParams sparams;
-
-  // Struct constructors.
-  Stg_Alligator_Params(AlligatorParams &_iparams, StgParams &_sparams)
-      : iparams(indi_alli_defaults, _iparams.tf.GetTf()), sparams(stg_alli_defaults) {
-    iparams = _iparams;
-    sparams = _sparams;
-  }
-};
-
 #ifdef __config__
 // Loads pair specific param values.
 #include "config/H1.h"
