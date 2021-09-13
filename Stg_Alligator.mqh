@@ -43,7 +43,7 @@ struct Indi_Alligator_Params_Defaults : AlligatorParams {
                         ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
                         ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price,
                         ::Alligator_Indi_Alligator_Shift) {}
-} indi_alli_defaults;
+};
 
 // Defines struct with default user strategy values.
 struct Stg_Alligator_Params_Defaults : StgParams {
@@ -58,7 +58,7 @@ struct Stg_Alligator_Params_Defaults : StgParams {
     Set(STRAT_PARAM_OCT, Alligator_OrderCloseTime);
     Set(STRAT_PARAM_SOFT, Alligator_SignalOpenFilterTime);
   }
-} stg_alli_defaults;
+};
 
 #ifdef __config__
 // Loads pair specific param values.
@@ -78,7 +78,9 @@ class Stg_Alligator : public Strategy {
 
   static Stg_Alligator *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
+    Indi_Alligator_Params_Defaults indi_alli_defaults;
     AlligatorParams _indi_params(indi_alli_defaults, _tf);
+    Stg_Alligator_Params_Defaults stg_alli_defaults;
     StgParams _stg_params(stg_alli_defaults);
 #ifdef __config__
     SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
