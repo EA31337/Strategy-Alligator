@@ -89,7 +89,6 @@ class Stg_Alligator : public Strategy {
                              stg_alli_h4, stg_alli_h8);
 #endif
     // Initialize indicator.
-    AlligatorParams alli_params(_indi_params);
     _stg_params.SetIndicator(new Indi_Alligator(_indi_params));
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
