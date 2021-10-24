@@ -36,13 +36,13 @@ INPUT int Alligator_Indi_Alligator_Shift = 0;                                   
 // Structs.
 
 // Defines struct with default user indicator values.
-struct Indi_Alligator_Params_Defaults : AlligatorParams {
+struct Indi_Alligator_Params_Defaults : IndiAlligatorParams {
   Indi_Alligator_Params_Defaults()
-      : AlligatorParams(::Alligator_Indi_Alligator_Period_Jaw, ::Alligator_Indi_Alligator_Shift_Jaw,
-                        ::Alligator_Indi_Alligator_Period_Teeth, ::Alligator_Indi_Alligator_Shift_Teeth,
-                        ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
-                        ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price,
-                        ::Alligator_Indi_Alligator_Shift) {}
+      : IndiAlligatorParams(::Alligator_Indi_Alligator_Period_Jaw, ::Alligator_Indi_Alligator_Shift_Jaw,
+                            ::Alligator_Indi_Alligator_Period_Teeth, ::Alligator_Indi_Alligator_Shift_Teeth,
+                            ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
+                            ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price,
+                            ::Alligator_Indi_Alligator_Shift) {}
 };
 
 // Defines struct with default user strategy values.
@@ -79,12 +79,12 @@ class Stg_Alligator : public Strategy {
   static Stg_Alligator *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     Indi_Alligator_Params_Defaults indi_alli_defaults;
-    AlligatorParams _indi_params(indi_alli_defaults, _tf);
+    IndiAlligatorParams _indi_params(indi_alli_defaults, _tf);
     Stg_Alligator_Params_Defaults stg_alli_defaults;
     StgParams _stg_params(stg_alli_defaults);
 #ifdef __config__
-    SetParamsByTf<AlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
-                                   indi_alli_h1, indi_alli_h4, indi_alli_h8);
+    SetParamsByTf<IndiAlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
+                                       indi_alli_h1, indi_alli_h4, indi_alli_h8);
     SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
                              stg_alli_h4, stg_alli_h8);
 #endif
