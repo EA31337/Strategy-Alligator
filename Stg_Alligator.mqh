@@ -78,13 +78,9 @@ class Stg_Alligator : public Strategy {
 
   static Stg_Alligator *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
-    Indi_Alligator_Params_Defaults indi_alli_defaults;
-    IndiAlligatorParams _indi_params(indi_alli_defaults, _tf);
     Stg_Alligator_Params_Defaults stg_alli_defaults;
     StgParams _stg_params(stg_alli_defaults);
 #ifdef __config__
-    SetParamsByTf<IndiAlligatorParams>(_indi_params, _tf, indi_alli_m1, indi_alli_m5, indi_alli_m15, indi_alli_m30,
-                                       indi_alli_h1, indi_alli_h4, indi_alli_h8);
     SetParamsByTf<StgParams>(_stg_params, _tf, stg_alli_m1, stg_alli_m5, stg_alli_m15, stg_alli_m30, stg_alli_h1,
                              stg_alli_h4, stg_alli_h8);
 #endif
@@ -93,8 +89,16 @@ class Stg_Alligator : public Strategy {
     ChartParams _cparams(_tf, _Symbol);
     TradeParams _tparams;
     Strategy *_strat = new Stg_Alligator(_stg_params, _tparams, _cparams, "Alligator");
-    _strat.SetIndicator(new Indi_Alligator(_indi_params));
     return _strat;
+  }
+
+  /**
+   * Event on strategy's init.
+   */
+  void OnInit() {
+    Indi_Alligator_Params_Defaults indi_alli_defaults;
+    IndiAlligatorParams _indi_params(indi_alli_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    SetIndicator(new Indi_Alligator(_indi_params));
   }
 
   /**
