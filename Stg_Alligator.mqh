@@ -35,16 +35,6 @@ INPUT int Alligator_Indi_Alligator_Shift = 0;                                   
 
 // Structs.
 
-// Defines struct with default user indicator values.
-struct Indi_Alligator_Params_Defaults : IndiAlligatorParams {
-  Indi_Alligator_Params_Defaults()
-      : IndiAlligatorParams(::Alligator_Indi_Alligator_Period_Jaw, ::Alligator_Indi_Alligator_Shift_Jaw,
-                            ::Alligator_Indi_Alligator_Period_Teeth, ::Alligator_Indi_Alligator_Shift_Teeth,
-                            ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
-                            ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price,
-                            ::Alligator_Indi_Alligator_Shift) {}
-};
-
 // Defines struct with default user strategy values.
 struct Stg_Alligator_Params_Defaults : StgParams {
   Stg_Alligator_Params_Defaults()
@@ -96,8 +86,12 @@ class Stg_Alligator : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
-    Indi_Alligator_Params_Defaults indi_alli_defaults;
-    IndiAlligatorParams _indi_params(indi_alli_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    IndiAlligatorParams _indi_params(::Alligator_Indi_Alligator_Period_Jaw, ::Alligator_Indi_Alligator_Shift_Jaw,
+                                     ::Alligator_Indi_Alligator_Period_Teeth, ::Alligator_Indi_Alligator_Shift_Teeth,
+                                     ::Alligator_Indi_Alligator_Period_Lips, ::Alligator_Indi_Alligator_Shift_Lips,
+                                     ::Alligator_Indi_Alligator_MA_Method, ::Alligator_Indi_Alligator_Applied_Price,
+                                     ::Alligator_Indi_Alligator_Shift);
+    _indi_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
     SetIndicator(new Indi_Alligator(_indi_params));
   }
 
