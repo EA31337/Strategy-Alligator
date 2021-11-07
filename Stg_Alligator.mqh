@@ -100,7 +100,8 @@ class Stg_Alligator : public Strategy {
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
     Indi_Alligator *_indi = GetIndicator();
-    bool _result = _indi.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift);
+    int _ishift = _shift + ::Alligator_Indi_Alligator_Shift;
+    bool _result = _indi.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _ishift);
     if (!_result) {
       // Returns false when indicator data is not valid.
       return false;
@@ -108,64 +109,73 @@ class Stg_Alligator : public Strategy {
     double _level_pips = _level * Chart().GetPipSize();
     switch (_cmd) {
       case ORDER_TYPE_BUY:
-        _result =
-            (_indi[CURR][(int)LINE_LIPS] >
-                 _indi[CURR][(int)LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
-             _indi[CURR][(int)LINE_TEETH] > _indi[CURR][(int)LINE_JAW] + _level_pips  // ... Teeth are above Jaw ...
-            );
+        _result = (_indi[_ishift][(int)LINE_LIPS] >
+                       _indi[_ishift][(int)LINE_TEETH] + _level_pips &&  // Check if Lips are above Teeth ...
+                   _indi[_ishift][(int)LINE_TEETH] >
+                       _indi[_ishift][(int)LINE_JAW] + _level_pips  // ... Teeth are above Jaw ...
+        );
         if (_method != 0) {
           if (METHOD(_method, 0))
-            _result &= (_indi[CURR][(int)LINE_LIPS] > _indi[PREV][(int)LINE_LIPS] &&    // Check if Lips increased.
-                        _indi[CURR][(int)LINE_TEETH] > _indi[PREV][(int)LINE_TEETH] &&  // Check if Teeth increased.
-                        _indi[CURR][(int)LINE_JAW] > _indi[PREV][(int)LINE_JAW]         // // Check if Jaw increased.
-            );
-          if (METHOD(_method, 1))
-            _result &= (_indi[PREV][(int)LINE_LIPS] > _indi[PPREV][(int)LINE_LIPS] &&    // Check if Lips increased.
-                        _indi[PREV][(int)LINE_TEETH] > _indi[PPREV][(int)LINE_TEETH] &&  // Check if Teeth increased.
-                        _indi[PREV][(int)LINE_JAW] > _indi[PPREV][(int)LINE_JAW]         // // Check if Jaw increased.
-            );
-          if (METHOD(_method, 2))
-            _result &= _indi[CURR][(int)LINE_LIPS] > _indi[PPREV][(int)LINE_LIPS];  // Check if Lips increased.
-          if (METHOD(_method, 3))
-            _result &= _indi[CURR][(int)LINE_LIPS] - _indi[CURR][(int)LINE_TEETH] >
-                       _indi[CURR][(int)LINE_TEETH] - _indi[CURR][(int)LINE_JAW];
-          if (METHOD(_method, 4))
             _result &=
-                (_indi[PPREV][(int)LINE_LIPS] <=
-                     _indi[PPREV][(int)LINE_TEETH] ||  // Check if Lips are below Teeth and ...
-                 _indi[PPREV][(int)LINE_LIPS] <= _indi[PPREV][(int)LINE_JAW] ||  // ... Lips are below Jaw and ...
-                 _indi[PPREV][(int)LINE_TEETH] <= _indi[PPREV][(int)LINE_JAW]    // ... Teeth are below Jaw ...
+                (_indi[_ishift][(int)LINE_LIPS] > _indi[_ishift + 1][(int)LINE_LIPS] &&    // Check if Lips increased.
+                 _indi[_ishift][(int)LINE_TEETH] > _indi[_ishift + 1][(int)LINE_TEETH] &&  // Check if Teeth increased.
+                 _indi[_ishift][(int)LINE_JAW] > _indi[_ishift + 1][(int)LINE_JAW]         // // Check if Jaw increased.
                 );
+          if (METHOD(_method, 1))
+            _result &=
+                (_indi[_ishift + 1][(int)LINE_LIPS] > _indi[_ishift + 2][(int)LINE_LIPS] &&  // Check if Lips increased.
+                 _indi[_ishift + 1][(int)LINE_TEETH] >
+                     _indi[_ishift + 2][(int)LINE_TEETH] &&                             // Check if Teeth increased.
+                 _indi[_ishift + 1][(int)LINE_JAW] > _indi[_ishift + 2][(int)LINE_JAW]  // // Check if Jaw increased.
+                );
+          if (METHOD(_method, 2))
+            _result &= _indi[_ishift][(int)LINE_LIPS] > _indi[_ishift + 2][(int)LINE_LIPS];  // Check if Lips increased.
+          if (METHOD(_method, 3))
+            _result &= _indi[_ishift][(int)LINE_LIPS] - _indi[_ishift][(int)LINE_TEETH] >
+                       _indi[_ishift][(int)LINE_TEETH] - _indi[_ishift][(int)LINE_JAW];
+          if (METHOD(_method, 4))
+            _result &= (_indi[_ishift + 2][(int)LINE_LIPS] <=
+                            _indi[_ishift + 2][(int)LINE_TEETH] ||  // Check if Lips are below Teeth and ...
+                        _indi[_ishift + 2][(int)LINE_LIPS] <=
+                            _indi[_ishift + 2][(int)LINE_JAW] ||  // ... Lips are below Jaw and ...
+                        _indi[_ishift + 2][(int)LINE_TEETH] <=
+                            _indi[_ishift + 2][(int)LINE_JAW]  // ... Teeth are below Jaw ...
+            );
         }
         break;
       case ORDER_TYPE_SELL:
-        _result =
-            (_indi[CURR][(int)LINE_LIPS] + _level_pips <
-                 _indi[CURR][(int)LINE_TEETH] &&  // Check if Lips are below Teeth and ...
-             _indi[CURR][(int)LINE_TEETH] + _level_pips < _indi[CURR][(int)LINE_JAW]  // ... Teeth are below Jaw ...
-            );
+        _result = (_indi[_ishift][(int)LINE_LIPS] + _level_pips <
+                       _indi[_ishift][(int)LINE_TEETH] &&  // Check if Lips are below Teeth and ...
+                   _indi[_ishift][(int)LINE_TEETH] + _level_pips <
+                       _indi[_ishift][(int)LINE_JAW]  // ... Teeth are below Jaw ...
+        );
         if (_method != 0) {
           if (METHOD(_method, 0))
-            _result &= (_indi[CURR][(int)LINE_LIPS] < _indi[PREV][(int)LINE_LIPS] &&    // Check if Lips decreased.
-                        _indi[CURR][(int)LINE_TEETH] < _indi[PREV][(int)LINE_TEETH] &&  // Check if Teeth decreased.
-                        _indi[CURR][(int)LINE_JAW] < _indi[PREV][(int)LINE_JAW]         // // Check if Jaw decreased.
-            );
-          if (METHOD(_method, 1))
-            _result &= (_indi[PREV][(int)LINE_LIPS] < _indi[PPREV][(int)LINE_LIPS] &&    // Check if Lips decreased.
-                        _indi[PREV][(int)LINE_TEETH] < _indi[PPREV][(int)LINE_TEETH] &&  // Check if Teeth decreased.
-                        _indi[PREV][(int)LINE_JAW] < _indi[PPREV][(int)LINE_JAW]         // // Check if Jaw decreased.
-            );
-          if (METHOD(_method, 2))
-            _result &= _indi[CURR][(int)LINE_LIPS] < _indi[PPREV][(int)LINE_LIPS];  // Check if Lips decreased.
-          if (METHOD(_method, 3))
-            _result &= _indi[CURR][(int)LINE_TEETH] - _indi[CURR][(int)LINE_LIPS] >
-                       _indi[CURR][(int)LINE_JAW] - _indi[CURR][(int)LINE_TEETH];
-          if (METHOD(_method, 4))
             _result &=
-                (_indi[PPREV][(int)LINE_LIPS] >= _indi[PPREV][(int)LINE_TEETH] ||  // Check if Lips are above Teeth ...
-                 _indi[PPREV][(int)LINE_LIPS] >= _indi[PPREV][(int)LINE_JAW] ||    // ... Lips are above Jaw ...
-                 _indi[PPREV][(int)LINE_TEETH] >= _indi[PPREV][(int)LINE_JAW]      // ... Teeth are above Jaw ...
+                (_indi[_ishift][(int)LINE_LIPS] < _indi[_ishift + 1][(int)LINE_LIPS] &&    // Check if Lips decreased.
+                 _indi[_ishift][(int)LINE_TEETH] < _indi[_ishift + 1][(int)LINE_TEETH] &&  // Check if Teeth decreased.
+                 _indi[_ishift][(int)LINE_JAW] < _indi[_ishift + 1][(int)LINE_JAW]         // // Check if Jaw decreased.
                 );
+          if (METHOD(_method, 1))
+            _result &=
+                (_indi[_ishift + 1][(int)LINE_LIPS] < _indi[_ishift + 2][(int)LINE_LIPS] &&  // Check if Lips decreased.
+                 _indi[_ishift + 1][(int)LINE_TEETH] <
+                     _indi[_ishift + 2][(int)LINE_TEETH] &&                             // Check if Teeth decreased.
+                 _indi[_ishift + 1][(int)LINE_JAW] < _indi[_ishift + 2][(int)LINE_JAW]  // // Check if Jaw decreased.
+                );
+          if (METHOD(_method, 2))
+            _result &= _indi[_ishift][(int)LINE_LIPS] < _indi[_ishift + 2][(int)LINE_LIPS];  // Check if Lips decreased.
+          if (METHOD(_method, 3))
+            _result &= _indi[_ishift][(int)LINE_TEETH] - _indi[_ishift][(int)LINE_LIPS] >
+                       _indi[_ishift][(int)LINE_JAW] - _indi[_ishift][(int)LINE_TEETH];
+          if (METHOD(_method, 4))
+            _result &= (_indi[_ishift + 2][(int)LINE_LIPS] >=
+                            _indi[_ishift + 2][(int)LINE_TEETH] ||  // Check if Lips are above Teeth ...
+                        _indi[_ishift + 2][(int)LINE_LIPS] >=
+                            _indi[_ishift + 2][(int)LINE_JAW] ||  // ... Lips are above Jaw ...
+                        _indi[_ishift + 2][(int)LINE_TEETH] >=
+                            _indi[_ishift + 2][(int)LINE_JAW]  // ... Teeth are above Jaw ...
+            );
         }
         break;
     }
