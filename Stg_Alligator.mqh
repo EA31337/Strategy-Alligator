@@ -24,12 +24,12 @@ INPUT float Alligator_OrderCloseProfit = 80;      // Order close profit
 INPUT int Alligator_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("Alligator strategy: Alligator indicator params");
 INPUT int Alligator_Indi_Alligator_Period_Jaw = 30;                               // Jaw Period
-INPUT int Alligator_Indi_Alligator_Period_Teeth = 8;                              // Teeth Period
+INPUT int Alligator_Indi_Alligator_Period_Teeth = 6;                              // Teeth Period
 INPUT int Alligator_Indi_Alligator_Period_Lips = 4;                               // Lips Period
 INPUT int Alligator_Indi_Alligator_Shift_Jaw = 6;                                 // Jaw Shift
 INPUT int Alligator_Indi_Alligator_Shift_Teeth = 4;                               // Teeth Shift
 INPUT int Alligator_Indi_Alligator_Shift_Lips = 2;                                // Lips Shift
-INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = (ENUM_MA_METHOD)3;      // MA Method
+INPUT ENUM_MA_METHOD Alligator_Indi_Alligator_MA_Method = MODE_LWMA;              // MA Method
 INPUT ENUM_APPLIED_PRICE Alligator_Indi_Alligator_Applied_Price = PRICE_TYPICAL;  // Applied Price
 INPUT int Alligator_Indi_Alligator_Shift = 0;                                     // Shift
 
