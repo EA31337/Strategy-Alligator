@@ -6,16 +6,16 @@
 // User input params.
 INPUT_GROUP("Alligator strategy: strategy params");
 INPUT float Alligator_LotSize = 0;                // Lot size
-INPUT int Alligator_SignalOpenMethod = -1;        // Signal open method (-127-127)
-INPUT float Alligator_SignalOpenLevel = 0.0f;     // Signal open level (-49-49)
+INPUT int Alligator_SignalOpenMethod = 22;        // Signal open method (-127-127)
+INPUT float Alligator_SignalOpenLevel = 4.0f;     // Signal open level
 INPUT int Alligator_SignalOpenFilterMethod = 32;  // Signal open filter method
 INPUT int Alligator_SignalOpenFilterTime = 3;     // Signal open filter time
 INPUT int Alligator_SignalOpenBoostMethod = 0;    // Signal open boost method
-INPUT int Alligator_SignalCloseMethod = 2;        // Signal close method (-127-127)
+INPUT int Alligator_SignalCloseMethod = 3;        // Signal close method (-127-127)
 INPUT int Alligator_SignalCloseFilter = 0;        // Signal close filter (-127-127)
-INPUT float Alligator_SignalCloseLevel = 0.0f;    // Signal close level (-49-49)
-INPUT int Alligator_PriceStopMethod = 16;         // Price stop method (0-127)
-INPUT float Alligator_PriceStopLevel = 2;         // Price stop level
+INPUT float Alligator_SignalCloseLevel = 1.0f;    // Signal close level
+INPUT int Alligator_PriceStopMethod = 20;         // Price stop method (0-127)
+INPUT float Alligator_PriceStopLevel = 2.2f;      // Price stop level
 INPUT int Alligator_TickFilterMethod = 32;        // Tick filter method
 INPUT float Alligator_MaxSpread = 4.0;            // Max spread to trade (pips)
 INPUT short Alligator_Shift = 2;                  // Shift
